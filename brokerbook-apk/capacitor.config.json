@@ -1,0 +1,8 @@
+{
+  "appId": "com.sunshine.brokerbook",
+  "appName": "Brokerlynx",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

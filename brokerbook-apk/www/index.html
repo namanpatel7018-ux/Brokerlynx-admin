@@ -1,0 +1,599 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brokerlynx</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f4;--card:#fff;--tx:#0f1d2b;--mu:#64748b;--bd:#e0e6ed;--pr:#0b3b3c;--pr2:#17696a;--pb:#0b3b3c;--pt:#fff;--br:#d9a84e;--brt:#94670f;--ok:#15803d;--okb:#dcf5e4;--wa:#a05a05;--wab:#fdf0d5;--er:#b42318;--erb:#fde4e1;--gr:#475569;--grb:#e6ebf1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1117;--card:#121c25;--tx:#e8eef3;--mu:#8ea1b1;--bd:#223240;--pr:#0f4a4b;--pr2:#1b7b7a;--pb:#35c0ad;--pt:#04201d;--ok:#4ade80;--okb:#12311f;--wa:#f5c15d;--wab:#3a2c0d;--er:#ff8a80;--erb:#3b1613;--gr:#a9b8c6;--grb:#1e2c38;--brt:#d9a84e}}
+:root[data-theme="dark"]{--bg:#0a1117;--card:#121c25;--tx:#e8eef3;--mu:#8ea1b1;--bd:#223240;--pr:#0f4a4b;--pr2:#1b7b7a;--pb:#35c0ad;--pt:#04201d;--ok:#4ade80;--okb:#12311f;--wa:#f5c15d;--wab:#3a2c0d;--er:#ff8a80;--erb:#3b1613;--gr:#a9b8c6;--grb:#1e2c38;--brt:#d9a84e}
+*,*:before,*:after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:500 14px/1.4 Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums;-webkit-tap-highlight-color:transparent}
+#app{height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
+header{padding:14px 18px 6px;display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:11px;object-fit:cover;background:#fefefc;border:1px solid var(--bd)}
+header b{font-size:18px;font-weight:800;letter-spacing:-.3px}header small{display:block;color:var(--mu);font-size:11.5px;font-weight:600;margin-top:-2px}
+main{flex:1;overflow-y:auto;padding:8px 16px 96px}
+nav{display:flex;background:var(--card);border-top:1px solid var(--bd)}
+nav button{flex:1;background:none;border:0;padding:9px 0 10px;color:var(--mu);font:700 10px Manrope,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+nav button.on{color:var(--pr2)}nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on svg{stroke-width:2.3}
+.wm{display:flex;align-items:center;justify-content:center;gap:11px;padding:6px 0 calc(7px + env(safe-area-inset-bottom,0px));background:var(--card);color:var(--mu);font:600 10.5px/1 Manrope,system-ui,sans-serif;letter-spacing:.14em;user-select:none;-webkit-user-select:none}
+.wm:before,.wm:after{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--br))}
+.wm:after{transform:scaleX(-1)}
+.wm b{color:var(--brt);font-weight:800;letter-spacing:.16em}
+.wm.in{background:none;padding:18px 0 4px}
+.hero{background:linear-gradient(150deg,var(--pr),var(--pr2));color:#fff;border-radius:22px;padding:18px 18px 16px;margin:6px 0 14px}
+.hero small{opacity:.78;font-weight:600;font-size:12px}.hero .big{font-size:36px;font-weight:800;letter-spacing:-1px;margin:2px 0 12px;line-height:1.1}.hero .big span{font-size:15px;font-weight:700;color:var(--br);margin-left:5px;letter-spacing:0}
+.hero .st{display:flex;gap:10px}.hero .st div{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:8px 10px}.hero .st b{display:block;font-size:15px;font-weight:700}
+.srch{width:100%;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;padding:12px 14px;font:500 15px Manrope,system-ui,sans-serif;outline:none}
+.srch:focus,.f input:focus,.f select:focus{border-color:var(--pr2);box-shadow:0 0 0 3px color-mix(in srgb,var(--pr2) 22%,transparent)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:10px 0 12px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--mu);border-radius:20px;padding:6px 13px;font:700 12.5px Manrope,system-ui,sans-serif;cursor:pointer}
+.chips button.on{background:var(--pb);color:var(--pt);border-color:var(--pb)}
+.cd{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:10px;cursor:pointer}
+.cd:active{transform:scale(.99)}.r1{display:flex;justify-content:space-between;align-items:center}.r1 b{font-size:15px;font-weight:800}
+.bd{font-size:11.5px;font-weight:700;border-radius:20px;padding:3px 10px}.bd.Pending{background:var(--wab);color:var(--wa)}.bd.Expired{background:var(--erb);color:var(--er)}.bd.Completed{background:var(--okb);color:var(--ok)}.bd.Cancelled{background:var(--grb);color:var(--gr)}
+.pt{margin:6px 0 2px;font-weight:700}.pt i{color:var(--mu);font-style:normal;font-weight:500}.mu{color:var(--mu);font-size:12.5px}
+.r3{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:12.5px;color:var(--mu)}.r3 b{color:var(--tx);font-weight:700}
+.bar{height:5px;border-radius:5px;background:var(--grb);margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--br);border-radius:5px}
+.emp{text-align:center;color:var(--mu);padding:44px 20px}.emp b{display:block;color:var(--tx);font-size:16px;margin-bottom:4px}
+.fab{position:fixed;bottom:calc(100px + env(safe-area-inset-bottom,0px));right:max(18px,calc(50% - 242px));background:var(--pb);color:var(--pt);border:0;border-radius:18px;padding:14px 20px;font:800 14px Manrope,system-ui,sans-serif;box-shadow:0 8px 22px rgba(0,0,0,.28);cursor:pointer;z-index:5}
+.ov{position:fixed;inset:0;background:rgba(6,16,26,.55);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.pn{background:var(--card);width:100%;max-width:520px;max-height:93%;overflow:auto;border-radius:24px 24px 0 0;padding:8px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
+#spl{position:fixed;inset:0;z-index:9999;background:radial-gradient(120% 90% at 50% 30%,#12303B 0%,#0A1A22 55%,#050C11 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .55s ease,transform .55s ease}
+#spl.out{opacity:0;transform:scale(1.04);pointer-events:none}
+#spl img{width:104px;height:104px;border-radius:27px;object-fit:cover;box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 38px rgba(217,168,78,.28);animation:spi .9s cubic-bezier(.2,.9,.25,1.2) both}
+#spl h1{margin:22px 0 4px;font-size:28px;letter-spacing:.14em;font-weight:800;animation:spt .7s .45s ease both}
+#spl p{margin:0;font-size:12.5px;letter-spacing:.16em;color:#D9A84E;text-transform:uppercase;animation:spt .7s .7s ease both}
+#spl i{display:block;height:2px;width:0;margin-top:26px;border-radius:2px;background:linear-gradient(90deg,transparent,#D9A84E,transparent);animation:spl 1.1s .5s ease forwards}
+@keyframes spi{from{opacity:0;transform:scale(.4) rotate(-12deg)}to{opacity:1;transform:none}}@keyframes spt{from{opacity:0;transform:translateY(12px);letter-spacing:.3em}to{opacity:1;transform:none}}@keyframes spl{to{width:170px}}
+@media(prefers-reduced-motion:reduce){#spl *{animation:none!important}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}@media(prefers-reduced-motion:reduce){.pn{animation:none}}
+.grab{width:38px;height:4px;border-radius:4px;background:var(--bd);margin:4px auto 12px}
+.pn h2{margin:0 0 12px;font-size:20px;font-weight:800;letter-spacing:-.3px}
+.f{margin-bottom:12px}.f>span{display:block;font-size:12.5px;font-weight:700;color:var(--mu);margin-bottom:5px}
+.f input,.f select{width:100%;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:12px;padding:12px;font:500 16px Manrope,system-ui,sans-serif;outline:none;min-width:0}
+.f textarea{width:100%;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:12px;padding:12px;font:500 14px/1.45 Manrope,system-ui,sans-serif;outline:none;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row{display:flex;gap:8px}
+.btn{width:100%;background:var(--pb);color:var(--pt);border:0;border-radius:14px;padding:14px;font:800 15px Manrope,system-ui,sans-serif;cursor:pointer;margin-top:4px}
+.btn2{background:var(--grb);color:var(--tx);border:0;border-radius:12px;padding:0 16px;font:700 13.5px Manrope,system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.btn.s{background:var(--grb);color:var(--tx)}.btn.d{background:var(--erb);color:var(--er)}.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.acts .btn{margin:0;padding:12px;font-size:13.5px}
+.hint{font-size:12.5px;font-weight:600;margin:-6px 0 10px;min-height:0;color:var(--mu)}.hint.ok{color:var(--ok)}.hint.bad,.er{color:var(--er)}.er{font-weight:700;font-size:13px;margin:2px 0 8px}
+.amt{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;margin-bottom:12px;font-weight:700}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px;margin-bottom:6px}.kv span{display:block;font-size:11.5px;color:var(--mu);font-weight:600}.kv b{font-size:14.5px;font-weight:700;word-break:break-word}.kv .w{grid-column:1/-1}
+.lk{color:var(--pr2);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.sec{font-size:13px;font-weight:800;margin:16px 0 8px}.dl{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--bd)}.dl button{background:none;border:0;color:var(--er);font-size:18px;cursor:pointer}
+.gbx{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--okb);border-radius:14px;padding:12px;margin:0 0 12px}.gbx span{display:block;font-size:11px;color:var(--mu);font-weight:600}.gbx b{font-size:13.5px;font-weight:700}.gbx .w{grid-column:1/-1;font-size:11.5px}
+.tag{font-size:11px;font-weight:700;color:var(--mu);border:1px solid var(--bd);border-radius:6px;padding:1px 7px;margin-left:6px}
+#toast{position:fixed;left:50%;bottom:calc(116px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;font-size:13px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;max-width:88%;text-align:center}
+#toast.on{opacity:1}
+</style></head><body>
+<div id="spl"><img alt=""><h1>BROKERLYNX</h1><p>Smart Deals, Seamless Records</p><i></i></div>
+<div id="app"><header><img class="logo" alt="" src="data:image/jpeg;base64,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"><div><b>Broker<span style="color:var(--brt)">lynx</span></b><small>Smart Deals, Seamless Records</small></div></header>
+<main id="main"></main><nav id="nav"></nav><div class="wm">A Product By <b>Patel Naman</b></div></div>
+<button class="fab" id="fab"></button><div id="toast"></div><div id="sh"></div>
+<script src="jspdf.umd.min.js"></script>
+<script>
+const K='brokerbook_v1';let db={l:[],c:[],n:1};
+try{const s=JSON.parse(localStorage.getItem(K));if(s)db=s}catch(e){}
+const SNP='bb_snap_';
+function snapKeys(){const k=[];try{for(let i=0;i<localStorage.length;i++){const n=localStorage.key(i);if(n&&n.startsWith(SNP))k.push(n)}}catch(e){}return k.sort()}
+function snapNow(label,raw){try{const ks=snapKeys();while(ks.length>=8)localStorage.removeItem(ks.shift());localStorage.setItem(SNP+Date.now()+'_'+Math.random().toString(36).slice(2,5),JSON.stringify({at:new Date().toISOString(),label,raw}))}catch(e){}}
+function snapList(){const a=[];snapKeys().forEach(k=>{try{const v=JSON.parse(localStorage.getItem(k));a.push({k,at:v.at,label:v.label,raw:v.raw})}catch(e){}});return a.sort((x,y)=>y.at.localeCompare(x.at))}
+const CODEF={n:'Sunshine Industries',g:'',ph:'7984324410',em:'sunshineindust@gmail.com',ad:''};
+const CO=()=>Object.assign({},CODEF,db.co||{});
+const coLine=g=>{const o=CO();return[g!==0&&o.g?'GSTIN: '+o.g:'',o.ph?'Tel: '+o.ph:'',o.em?'Email: '+o.em:''].filter(Boolean).join('   |   ')};
+const save=()=>{try{const d=new Date(),day=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),prev=localStorage.getItem(K);if(prev&&db.sd!==day){db.sd=day;snapNow('Automatic daily snapshot',prev)}localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
+const $=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0');
+(()=>{const s=$('#spl');if(!s)return;const l=$('.logo');if(l)s.querySelector('img').src=l.src;setTimeout(()=>s.classList.add('out'),1900);setTimeout(()=>s.remove(),2600)})();
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ymd=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+const fd=s=>s?new Date(s+'T00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'';
+const n3=n=>(+n).toLocaleString('en-IN',{maximumFractionDigits:3}),inr=n=>'₹'+(+n).toLocaleString('en-IN',{maximumFractionDigits:2});
+const nk=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+const L=id=>db.l.find(x=>x.id==id),C=id=>db.c.find(x=>x.id==id),ln=id=>L(id)?L(id).name:'(deleted)';
+const dv=c=>(c.d||[]).reduce((s,x)=>s+x.q,0),pe=c=>Math.max(0,+(c.q-dv(c)).toFixed(3));
+const st=c=>c.x?'Cancelled':pe(c)<=0?'Completed':c.v<ymd(new Date())?'Expired':'Pending';
+const open=c=>{const s=st(c);return s=='Pending'||s=='Expired'};
+const KG=c=>c&&(c.ru=='g'||c.ru=='q'),uq=c=>c&&c.ru=='n'?'Nos':KG(c)?'Kgs':'MT',mul=c=>c&&(c.ru=='m'||c.ru=='n'||c.ru=='q')?1:c&&c.ru=='g'?.1:100,t10=c=>KG(c)?.1:100,rtS=c=>({k:'10 kg',m:'MT',n:'Nos',g:'10 kg',q:'kg'}[(c&&c.ru)||'k']);
+const amtOf=(c,q)=>c.ru=='g'?q/10*c.r:q*mul(c)*c.r;
+const vq=(c,q)=>n3(q)+' '+uq(c),kgT=(c,q)=>uq(c)=='MT'?'  ('+n3(q*1000)+' kg)':KG(c)?'  ('+n3(q/1000)+' MT)':'';
+const qkg=(c,q)=>uq(c)=='MT'?Math.round(q*1000):KG(c)?q:'';
+const altR=c=>({k:['Rate per MT',c.r*100],g:['Rate per MT',c.r*100],m:['Rate per 10 kg',c.r/100],q:['Rate per MT',c.r*1000]}[c.ru||'k']||null);
+const qsum=(a,f=c=>c.q,h)=>{const t={MT:0,Kgs:0,Nos:0};a.forEach(c=>{t[uq(c)]+=f(c)});const p=[];['MT','Kgs','Nos'].forEach(u=>{if(t[u]||(u=='MT'&&!t.Kgs&&!t.Nos))p.push(n3(t[u])+(h?'<span>'+u+'</span>':' '+u))});return p.join(h?' + ':' + ')};
+const val=c=>amtOf(c,c.q);
+const ML=['J','F','M','A','M','J','J','A','S','O','N','D'];
+const ymNow=()=>{const n=new Date();return n.getFullYear()+'-'+p2(n.getMonth()+1)};
+const mkNo=(pre,arr)=>{const n=new Date(),Lt=pre+ML[n.getMonth()],y=String(n.getFullYear()).slice(-2),re=new RegExp('^'+Lt+'(\\d+)'+y+'$'),ym=ymNow(),v=arr.filter(x=>(x.cm||x.dt.slice(0,7))==ym).map(x=>{const m=re.exec(x.no);return m?+m[1]:-1}).filter(k=>k>=0);return Lt+(v.length?Math.max(...v)+1:0)+y};
+const MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'],BTZ='Asia/Kolkata';
+const bizYM=()=>{const p={};new Intl.DateTimeFormat('en-US',{timeZone:BTZ,year:'numeric',month:'2-digit'}).formatToParts(new Date()).forEach(x=>p[x.type]=x.value);return p.year+'-'+p.month};
+const fmtNo=(ym,n,pre='S')=>pre+MON[+ym.slice(5,7)-1]+n+ym.slice(2,4);
+const seqOf=(no,ym,pre='S')=>{const m=new RegExp('^'+pre+MON[+ym.slice(5,7)-1]+'(\\d+)'+ym.slice(2,4)+'$').exec(String(no||''));return m?+m[1]:-1};
+db.sq=db.sq||{};db.sqo=db.sqo||{};
+const peekSeq=(ym,arr=db.c,sq=db.sq,pre='S')=>Math.max(sq[ym]||0,...arr.map(c=>seqOf(c.no,ym,pre)+1),0);
+const nextNo=()=>fmtNo(bizYM(),peekSeq(bizYM()));
+const allocNo=(arr=db.c,k='sq',pre='S')=>{const ym=bizYM();db[k]=db[k]||{};let n=peekSeq(ym,arr,db[k],pre);while(arr.some(c=>c.no==fmtNo(ym,n,pre)))n++;db[k][ym]=n+1;return fmtNo(ym,n,pre)};
+const allocDo=()=>allocNo(db.o,'sqo','DOS');
+function migNo(){if(db.nv>=3)return;const bak=JSON.stringify(db);try{localStorage.setItem(K+'_pre_numbering_backup',bak)}catch(e){}
+ try{const g={};db.c.forEach((c,i)=>{const ym=(c.dt||'').slice(0,7)||c.cm||bizYM();(g[ym]=g[ym]||[]).push({c,i})});
+  Object.keys(g).sort().forEach(ym=>{g[ym].sort((a,b)=>(a.c.dt||'').localeCompare(b.c.dt||'')||(a.c.tm||'').localeCompare(b.c.tm||'')||a.i-b.i).forEach((x,k)=>{const nn=fmtNo(ym,k);if(x.c.no!=nn&&!x.c.on)x.c.on=x.c.no;x.c.no=nn});db.sq[ym]=g[ym].length});
+  const b0=JSON.parse(bak),ids=new Set(db.c.map(c=>c.id)),nos=new Set(db.c.map(c=>c.no));
+  if(nos.size!=db.c.length||b0.c.length!=db.c.length||b0.c.some(c=>!ids.has(c.id))||b0.o.length!=db.o.length||JSON.stringify(b0.o)!=JSON.stringify(db.o)||db.c.some((c,i)=>JSON.stringify({...c,no:0,on:0})!=JSON.stringify({...b0.c[i],no:0,on:0})))throw new Error('validation failed');
+  db.nv=3;db.mig={at:new Date().toISOString(),n:db.c.length};save()}
+ catch(e){db=JSON.parse(bak);db.sq=db.sq||{};try{localStorage.setItem(K,bak)}catch(_){}console.error('Numbering migration rolled back',e)}}
+function migDo(){if(db.nv>=4)return;const bak=JSON.stringify(db);try{localStorage.setItem(K+'_pre_do_numbering_backup',bak)}catch(e){}
+ try{db.sqo=db.sqo||{};const g={};db.o.forEach((o,i)=>{const ym=(o.dt||'').slice(0,7)||o.cm||bizYM();(g[ym]=g[ym]||[]).push({o,i})});
+  Object.keys(g).sort().forEach(ym=>{g[ym].sort((a,b)=>(a.o.dt||'').localeCompare(b.o.dt||'')||a.i-b.i).forEach((x,k)=>{const nn=fmtNo(ym,k,'DOS');if(x.o.no!=nn&&!x.o.on)x.o.on=x.o.no;x.o.no=nn});db.sqo[ym]=g[ym].length});
+  const b0=JSON.parse(bak),ids=new Set(db.o.map(o=>o.id)),nos=new Set(db.o.map(o=>o.no)),cids=new Set(db.c.map(c=>c.id));
+  if(nos.size!=db.o.length||b0.o.length!=db.o.length||b0.o.some(o=>!ids.has(o.id))||JSON.stringify(b0.c)!=JSON.stringify(db.c)||db.o.some((o,i)=>JSON.stringify({...o,no:0,on:0})!=JSON.stringify({...b0.o[i],no:0,on:0}))||db.o.some(o=>!cids.has(o.c)&&b0.c.some(c=>c.id==o.c)))throw new Error('validation failed');
+  db.nv=4;db.migDo={at:new Date().toISOString(),n:db.o.length};save()}
+ catch(e){db=JSON.parse(bak);db.sq=db.sq||{};db.sqo=db.sqo||{};try{localStorage.setItem(K,bak)}catch(_){}console.error('Delivery order numbering rolled back',e)}}
+const nextDo=()=>fmtNo(bizYM(),peekSeq(bizYM(),db.o,db.sqo,'DOS'),'DOS');
+
+const t12=t=>{const[h,m]=String(t).split(':').map(Number);return isNaN(h)?t:((h%12)||12)+':'+p2(m)+' '+(h<12?'AM':'PM')};
+const stamp=()=>{const n=new Date(),h=n.getHours();return p2(n.getDate())+'-'+p2(n.getMonth()+1)+'-'+String(n.getFullYear()).slice(-2)+'_'+p2((h%12)||12)+'-'+p2(n.getMinutes())+(h<12?'AM':'PM')};
+const vfn=o=>String(o.vn||o.no).replace(/[^\w-]/g,'')+'_'+stamp();
+const fdt=x=>fd(x.dt)+(x.tm?', '+t12(x.tm):'');
+const bkPend=c=>!c.bkT||!(c.bkR>0)||c.x?0:c.bkT=='mt'?pe(c)*c.bkR:c.bkT=='pm'?pe(c)/1000*c.bkR:c.bkT=='q'?pe(c)*t10(c)*c.bkR:amtOf(c,pe(c))*c.bkR/100;
+const bkSh=(c,p)=>{const k=c.bkP||'x';return k=='x'?(c.b==p?.5:0)+(c.s==p?.5:0):k=='b'?(c.b==p?1:0):(c.s==p?1:0)};
+function partyBk(rows){const m={};rows.forEach(c=>{[c.b,c.s].forEach((p,i)=>{const sh=bkSh(c,p);if(!(sh>0)||!(bkAmt(c)>0))return;const o=m[p]||(m[p]={id:p,n:0,nb:0,ns:0,t:0,p:0});o.n++;o.t+=bkAmt(c)*sh;o.p+=bkPend(c)*sh;i?o.ns++:o.nb++})});return Object.values(m).sort((a,b)=>b.p-a.p||ln(a.id).localeCompare(ln(b.id)))}
+const doMatch=(o,q)=>{const c=C(o.c)||{};return !q||(o.no+(o.on||'')+o.vn+o.tn+o.lr+(c.no||'')+(c.on||'')+ln(c.b)+ln(c.s)+(c.item||'')).toLowerCase().includes(q)};
+const RTO='AN AP AR AS BR CH CG DD DL DN GA GJ HP HR JH JK KA KL LA LD MH ML MN MP MZ NL OD OR PB PY RJ SK TN TR TS UK UP WB'.split(' ');
+const vnOk=v=>{v=String(v||'');const m=/^([A-Z]{2})(\d{1,2})([A-Z]{0,3})(\d{4})$/.exec(v);if(m)return RTO.includes(m[1])&&+m[2]>0&&+m[4]>0;const b=/^(\d{2})BH(\d{4})[A-Z]{1,2}$/.exec(v);return !!b&&+b[1]>=21&&+b[2]>0};
+const vnMsg=v=>{const m=/^([A-Z]{2})/.exec(v);return m&&!/^\d{2}BH/.test(v)&&!RTO.includes(m[1])?`“${m[1]}” is not a valid state or UT code. Use a real registration such as GJ01AB1234`:'Enter a valid registration number such as GJ01AB1234 (state code, RTO number, series letters, 4 digits) or a BH series like 22BH1234AA'};
+const PINC=[[11,28],[30,34],[36,49],[50,53],[56,59],[60,64],[67,79],[80,86],[90,99]];
+const pinOk=v=>/^[1-9]\d{5}$/.test(v)&&PINC.some(([a,b])=>+v.slice(0,2)>=a&&+v.slice(0,2)<=b);
+const phNorm=v=>{let d=String(v||'').replace(/\D/g,'');if(d.length==12&&d.startsWith('91'))d=d.slice(2);else if(d.length==11&&d[0]=='0')d=d.slice(1);return d};
+const phOk=v=>/^[6-9]\d{9}$/.test(v)&&!/^(\d)\1{9}$/.test(v)&&!'01234567890123456789'.includes(v)&&!'98765432109876543210'.includes(v)&&new Set(v).size>2;
+const pinLive=e=>{e.value=e.value.replace(/\D/g,'').slice(0,6);e.style.borderColor=e.value.length==6&&!pinOk(e.value)?'#C0392B':''};
+const phLive=e=>{e.value=phNorm(e.value).slice(0,10);e.style.borderColor=e.value.length==10&&!phOk(e.value)?'#C0392B':''};
+const vnLive=e=>{e.value=e.value.toUpperCase().replace(/[^A-Z0-9]/g,'');e.style.borderColor=e.value.length>=6&&!vnOk(e.value)?'#C0392B':''};
+const remDo=(c,ex)=>Math.max(0,+(c.q-dv(c)+(((c.d||[]).find(e=>ex&&e.do==ex))||{q:0}).q).toFixed(3));
+const bkAmt=c=>!c.bkT||!(c.bkR>0)?0:c.bkT=='mt'?c.q*c.bkR:c.bkT=='pm'?c.q/1000*c.bkR:c.bkT=='q'?c.q*t10(c)*c.bkR:val(c)*c.bkR/100;
+const txT=c=>({i:'Including tax',e:'Excluding tax'}[c.tx]||'');
+const bkTxt=(c,f)=>{f=f||inr;return !c.bkT||!(c.bkR>0)?'':c.bkT=='pc'?c.bkR+'% of value':f(c.bkR)+(c.bkT=='mt'?' per '+(KG(c)?'kg':uq(c)):c.bkT=='pm'?' per MT':' per 10 kg')};
+const bkLine=(c,f)=>c.bkT&&c.bkR>0?bkTxt(c,f)+'  =  '+f(bkAmt(c)):(c.bk||'');
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+/* GST validation: format + state code + PAN structure + checksum */
+const SC={"01":"Jammu & Kashmir","02":"Himachal Pradesh","03":"Punjab","04":"Chandigarh","05":"Uttarakhand","06":"Haryana","07":"Delhi","08":"Rajasthan","09":"Uttar Pradesh","10":"Bihar","11":"Sikkim","12":"Arunachal Pradesh","13":"Nagaland","14":"Manipur","15":"Mizoram","16":"Tripura","17":"Meghalaya","18":"Assam","19":"West Bengal","20":"Jharkhand","21":"Odisha","22":"Chhattisgarh","23":"Madhya Pradesh","24":"Gujarat","26":"Dadra & Nagar Haveli and Daman & Diu","27":"Maharashtra","29":"Karnataka","30":"Goa","31":"Lakshadweep","32":"Kerala","33":"Tamil Nadu","34":"Puducherry","35":"Andaman & Nicobar","36":"Telangana","37":"Andhra Pradesh","38":"Ladakh","97":"Other Territory"};
+const ENT={P:'Individual / Proprietor',C:'Company',F:'Partnership firm / LLP',H:'HUF',A:'Association of persons',T:'Trust',B:'Body of individuals',L:'Local authority',J:'Artificial juridical person',G:'Government'};
+function gbox(d){return `<div class="gbx"><div><span>State</span><b>${d.state}</b></div><div><span>PAN</span><b>${d.pan}</b></div><div><span>Constitution</span><b>${d.ent}</b></div><div><span>Registration no.</span><b>${d.reg}</b></div><div class="w mu">Auto-filled from the GSTIN. Name and address are not encoded in a GSTIN, so add them below.</div></div>`}
+function checkGST(g){
+ if(g.length!=15)return{ok:0,m:'GSTIN must be 15 characters (you entered '+g.length+')'};
+ if(!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(g))return{ok:0,m:'Invalid format. Pattern: 2 digits, 5 letters, 4 digits, 1 letter, 1 alphanumeric, Z, 1 alphanumeric'};
+ if(!SC[g.slice(0,2)])return{ok:0,m:'Invalid state code '+g.slice(0,2)};
+ const A='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';let s=0;
+ for(let i=0;i<14;i++){const v=A.indexOf(g[i])*(i%2?2:1);s+=Math.floor(v/36)+v%36}
+ const ck=A[(36-s%36)%36];
+ if(ck!=g[14])return{ok:0,m:'Check digit is wrong (expected '+ck+'). Please re-check the number'};
+ return{ok:1,m:'Valid GSTIN · '+SC[g.slice(0,2)]+' · PAN '+g.slice(2,12),d:{state:SC[g.slice(0,2)]+' ('+g.slice(0,2)+')',pan:g.slice(2,12),ent:ENT[g[5]]||'Other',reg:g[12]}};
+}
+let T='c',Q='',F='All',EID='',_ne=0,_dne=0,MS='i';const _n=new Date();let RF=ymd(new Date(_n.getFullYear(),_n.getMonth(),1)),RT=ymd(new Date(_n.getFullYear(),_n.getMonth()+1,0)),RI='',RC='';
+const IC={c:'<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 12h6M10 16h6"/>',p:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',l:'<path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M9 8h6M9 12h6"/>',i:'<path d="M3 8l9-5 9 5-9 5z"/><path d="M3 8v8l9 5 9-5V8"/>',r:'<path d="M5 20V10M12 20V4M19 20v-7"/>',o:'<path d="M2 6h11v9H2zM13 9h4l3 3v3h-7"/><circle cx="6" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/>'};
+function toast(m){const t=$('#toast');t.textContent=m;t.className='on';clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2200)}
+function sh(h){$('#sh').innerHTML='<div class="ov" onclick="if(event.target==this)cs()"><div class="pn"><div class="grab"></div>'+h+'<div class="wm in">A Product By <b>Patel Naman</b></div></div></div>'}
+function cs(){$('#sh').innerHTML=''}
+function arm(b,f){if(b.dataset.a){f();return}b.dataset.a=1;b.dataset.t=b.textContent;b.textContent='Tap again to confirm';setTimeout(()=>{delete b.dataset.a;b.textContent=b.dataset.t},3000)}
+function render(){
+ $('#nav').innerHTML=[['c','Contracts'],['p','Pending'],['o','Delivery'],['l','Ledgers'],['i','Masters'],['r','Report']].map(([k,n])=>`<button class="${T==k?'on':''}" onclick="T='${k}';Q='';F='All';render()"><svg viewBox="0 0 24 24">${IC[k]}</svg>${n}</button>`).join('');
+ const fb=T=='l'?['+ New ledger',lf]:T=='i'?[{i:'+ New item',t:'+ New transporter',v:'+ New vehicle'}[MS],MS=='t'?tnf:MS=='v'?vhf:itf]:T=='o'?['+ New delivery order',dof]:['+ New contract',cf];$('#fab').textContent=fb[0]||'';$('#fab').onclick=()=>fb[1]();$('#fab').style.display=(T=='r'||(T=='i'&&(MS=='s'||MS=='b')))?'none':'';
+ let h='';
+ if(T=='c'){const o=db.c.filter(open),pq=qsum(o,pe,1),pv=o.reduce((s,c)=>s+amtOf(c,pe(c)),0);
+  h=`<div class="hero"><small>Pending to deliver</small><div class="big">${pq}</div><div class="st"><div><small>Open contracts</small><b>${o.length}</b></div><div><small>Pending value</small><b>${inr(pv)}</b></div></div></div>
+  <input class="srch" placeholder="Search contract, party or item" value="${esc(Q)}" oninput="Q=this.value;draw()">
+  <div class="chips">${['All','Pending','Expired','Completed','Cancelled'].map(f=>`<button class="${F==f?'on':''}" onclick="F='${f}';render()">${f}</button>`).join('')}</div>`}
+ else if(T=='p')h=`<div class="chips" style="padding-top:4px"><span class="mu">Contracts with quantity still to deliver, earliest validity first</span></div>`;
+ else if(T=='o')h=`<div class="row" style="margin-bottom:12px"><input class="srch" style="flex:1" placeholder="Search order, vehicle or transporter" value="${esc(Q)}" oninput="Q=this.value;draw()"><button class="btn2" onclick="doCsv()">Export CSV</button></div>`
+ else if(T=='r')h=`<div class="f" style="margin-top:4px"><span>Contract</span><select onchange="RC=this.value;render()"><option value="">All contracts</option>${db.c.slice().sort((a,b)=>(b.dt+b.tm).localeCompare(a.dt+a.tm)).map(c=>`<option value="${c.id}" ${RC==c.id?'selected':''}>${esc(c.no)} · ${esc(ln(c.b))} · ${esc(c.item)}</option>`).join('')}</select></div>${RC?'<div class="mu" style="margin:-4px 0 12px">Showing the selected contract only.</div>':''}<div class="two"><div class="f"><span>From</span><input type="date" value="${RF}" ${RC?'disabled':''} onchange="RF=this.value;draw()"></div><div class="f"><span>To</span><input type="date" value="${RT}" ${RC?'disabled':''} onchange="RT=this.value;draw()"></div></div><div class="f"><span>Item</span><select ${RC?'disabled':''} onchange="RI=this.value;draw()"><option value="">All items</option>${db.i.map(i=>`<option ${nk(RI)==nk(i.name)?'selected':''}>${esc(i.name)}</option>`).join('')}</select></div>`
+ else if(T=='i')h=`<div class="chips" style="flex-wrap:wrap;overflow:visible">${[['c','Company'],['i','Items'],['t','Transporters'],['v','Vehicles'],['s','PDF terms'],['b','Backup']].map(([k,n])=>`<button class="${MS==k?'on':''}" onclick="MS='${k}';render()">${n}</button>`).join('')}</div>`
+ else h=`<input class="srch" placeholder="Search ledgers" value="${esc(Q)}" oninput="Q=this.value;draw()"><div style="height:12px"></div>`;
+ $('#main').innerHTML=h+'<div id="lst"></div>';draw();
+}
+function card(c){const s=st(c),pc=Math.min(100,dv(c)/c.q*100);
+ return `<div class="cd" onclick="vc('${c.id}')"><div class="r1"><b>${esc(c.no)}</b><span class="bd ${s}">${s}</span></div>
+ <div class="pt">${esc(ln(c.b))} <i>buys from</i> ${esc(ln(c.s))}</div>
+ <div class="r3"><span>${esc(c.item)} · <b>${vq(c,c.q)}</b> @ ${inr(c.r)}/${rtS(c)}</span><span>Pending <b>${n3(pe(c))}</b></span></div>
+ <div class="r3"><span>${fd(c.dt)}, ${c.tm}</span><span>Valid till ${fd(c.v)}</span></div><div class="bar"><i style="width:${pc}%"></i></div></div>`}
+function draw(){let h='';const q=Q.trim().toLowerCase();
+ if(T=='o'){const a=db.o.slice().reverse().filter(o=>doMatch(o,q));
+  h=a.map(o=>{const c=C(o.c);return `<div class="cd" onclick="vdo('${o.id}')"><div class="r1"><b>${esc(o.no)}</b><span class="bd Pending">${esc(o.vn)}</span></div><div class="pt">${esc(ln(c.b))} <i>from</i> ${esc(ln(c.s))}</div><div class="r3"><span>${esc(c.item)} · <b>${vq(c,o.q)}</b></span><span>${esc(o.tn)}</span></div><div class="r3"><span>${fd(o.dt)} · Contract ${esc(c.no)}</span>${o.lr?`<span>LR ${esc(o.lr)}</span>`:''}</div></div>`}).join('')||`<div class="emp"><b>No delivery orders yet</b>Tap “New delivery order” to dispatch against a contract.</div>`}
+ else if(T=='r'){const a=rdata(),pb_=partyBk(a),tq=qsum(a),tb=a.reduce((x,c)=>x+bkAmt(c),0),tp=a.reduce((x,c)=>x+bkPend(c),0),ns=a.filter(c=>!(bkAmt(c)>0)).length;
+  h=`<div class="hero"><small>Pending brokerage</small><div class="big">${inr(tp)}</div><div class="st"><div><small>Total brokerage</small><b>${inr(tb)}</b></div><div><small>Contracts</small><b>${a.length}</b></div><div><small>Quantity</small><b>${tq}</b></div></div></div><div class="mu" style="margin:-4px 0 12px">Pending brokerage is the brokerage on quantity still to be delivered.</div>`
+  +(ns?`<div class="mu" style="margin:-4px 0 10px">${ns} contract${ns==1?' has':'s have'} no brokerage set</div>`:'')
+  +(pb_.length?`<div class="sec">Party-wise brokerage</div>`+pb_.map(p=>`<div class="cd" onclick="vl('${p.id}')"><div class="r1"><b>${esc(ln(p.id))}</b><b>${inr(p.p)}</b></div><div class="r3"><span>${p.nb?'Buyer in '+p.nb:''}${p.nb&&p.ns?' · ':''}${p.ns?'Seller in '+p.ns:''}</span><span>pending</span></div><div class="r3"><span>Total brokerage <b>${inr(p.t)}</b></span><span><button class="btn2" onclick="event.stopPropagation();ppdf('${p.id}')">PDF</button> <button class="btn2" onclick="event.stopPropagation();partyCsv('${p.id}')">CSV</button></span></div></div>`).join(''):'')
+  +(a.length?`<div class="sec">Contracts</div>`:'')
+  +a.map(c=>`<div class="cd" onclick="vc('${c.id}')"><div class="r1"><b>${esc(c.no)}</b><b>${bkAmt(c)>0?inr(bkAmt(c)):'Not set'}</b></div><div class="r3"><span>${fd(c.dt)} · ${esc(c.item)} · <b>${vq(c,c.q)}</b></span><span>${esc(bkTxt(c))}</span></div><div class="r3"><span>${esc(ln(c.b))} from ${esc(ln(c.s))}</span><span>${bkAmt(c)>0?'Pending <b>'+inr(bkPend(c))+'</b>':''}</span></div></div>`).join('')+(a.length?`<button class="btn" onclick="rpdf()">Export report as PDF</button><button class="btn s" style="margin-top:10px" onclick="partyCsv()">Export party-wise report as CSV</button>`:`<div class="emp"><b>No contracts found</b>Change the dates, item or contract above.</div>`)}
+ else if(T=='i'){
+  if(MS=='t'){const u=n=>db.o.filter(o=>nk(o.tn)==nk(n)).length;h=db.t.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(t=>{const nv=db.vh.filter(v=>v.t==t.id).length;return `<div class="cd" onclick="tnf('${t.id}')"><div class="r1"><b>${esc(t.name)}</b><span class="bd Cancelled">${nv} vehicle${nv==1?'':'s'}</span></div><div class="r3"><span>${u(t.name)} delivery order${u(t.name)==1?'':'s'}</span></div></div>`}).join('')||`<div class="emp"><b>No transporters yet</b>Add each transporter once and pick it in every delivery order.</div>`}
+  else if(MS=='v'){h=db.vh.slice().sort((a,b)=>a.no.localeCompare(b.no)).map(v=>{const t=db.t.find(x=>x.id==v.t);return `<div class="cd" onclick="vhf('${v.id}')"><div class="r1"><b>${esc(v.no)}</b><span class="bd Cancelled">${t?esc(t.name):'No transporter'}</span></div></div>`}).join('')||`<div class="emp"><b>No vehicles yet</b>Add each vehicle number once and pick it in every delivery order.</div>`}
+  else if(MS=='b'){const sn=snapList(),lb=db.lb?new Date(db.lb):null,old=!lb||Date.now()-lb>7*864e5;
+   h=`<div class="hero"><small>Last backup file</small><div class="big" style="font-size:22px">${lb?esc(fd(ymd(lb))+', '+t12(p2(lb.getHours())+':'+p2(lb.getMinutes()))):'Never'}</div><div class="st"><div><small>Contracts</small><b>${db.c.length}</b></div><div><small>Ledgers</small><b>${db.l.length}</b></div><div><small>Delivery orders</small><b>${db.o.length}</b></div></div></div>`
+   +(old?`<div class="hint" style="margin:-4px 0 12px;color:#B7791F">${lb?'Your last backup is more than 7 days old.':'You have not exported a backup yet.'} Export one now and keep it in Google Drive, email or WhatsApp.</div>`:'')
+   +`<button class="btn" onclick="expBk()">Export full backup</button><button class="btn s" style="margin-top:10px" onclick="$('#rf').click()">Restore from a backup file</button><input id="rf" type="file" accept=".json,application/json" hidden onchange="rsf(this)">
+   <div class="mu" style="margin:12px 0">The backup file holds every contract, ledger, item, delivery order, transporter, vehicle and setting. If you uninstall the app or change your phone, restoring this file brings everything back.</div>
+   <div class="sec">Automatic snapshots on this phone</div>`
+   +(sn.length?sn.map(s=>{let n={contracts:0,ledgers:0,deliveryOrders:0};try{n=cntDb(JSON.parse(s.raw))}catch(e){}const d=new Date(s.at);return `<div class="cd"><div class="r1"><b>${esc(fd(ymd(d))+', '+t12(p2(d.getHours())+':'+p2(d.getMinutes())))}</b><span class="bd Cancelled">${esc(s.label)}</span></div><div class="r3"><span>${n.contracts} contracts · ${n.ledgers} ledgers · ${n.deliveryOrders} delivery orders</span><button class="btn2" onclick="rss('${s.k}')">Restore</button></div></div>`}).join(''):`<div class="emp"><b>No snapshots yet</b>The app keeps up to 8 daily snapshots of your data before each day's first change.</div>`)
+   +`<div class="mu" style="margin-top:10px">Snapshots live inside the app and are erased if the app is uninstalled. Your exported backup file is the safe copy.</div>`}
+  else if(MS=='c'){const o=CO(),r=(l,v)=>v?`<div class="r3"><span>${l}</span><b>${esc(v)}</b></div>`:'';h=`<div class="cd" onclick="cof()"><div class="r1"><b>${esc(o.n)}</b><span class="bd Cancelled">Edit</span></div>${r('GSTIN',o.g)}${r('Phone',o.ph)}${r('Email',o.em)}${r('Address',o.ad)}</div><div class="mu" style="margin-top:10px">These details print in the header and footer of every PDF, in every CSV and in the WhatsApp message text. Each company should use its own copy of the app or change them here.</div>`}
+  else if(MS=='s'){h='<div class="cd" onclick="tcf()"><div class="r1"><b>PDF terms &amp; conditions</b><span class="bd Cancelled">Edit</span></div><div class="mu" style="margin-top:4px">Clauses printed on every contract PDF</div></div>'}
+  else{const u=n=>db.c.filter(c=>nk(c.item)==nk(n)).length;h=db.i.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(i=>`<div class="cd" onclick="itf('${i.id}')"><div class="r1"><b>${esc(i.name)}</b><span class="bd Cancelled">${u(i.name)} contract${u(i.name)==1?'':'s'}</span></div></div>`).join('')||`<div class="emp"><b>No items yet</b>Add items like Wheat or Cotton once and reuse them in every contract.</div>`}}
+ else if(T=='l'){const a=db.l.filter(l=>!q||(l.name+l.gst+l.city).toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
+  h=a.map(l=>{const cs=db.c.filter(c=>c.b==l.id||c.s==l.id),pq=qsum(cs.filter(open),pe);
+   return `<div class="cd" onclick="vl('${l.id}')"><div class="r1"><b>${esc(l.name)}</b><span class="bd Cancelled">${l.type}</span></div>
+   <div class="r3"><span>${l.gst?esc(l.gst)+' <b style="color:var(--ok)">✓</b>':'GST not added'}${l.city?' · '+esc(l.city):''}</span></div>
+   <div class="r3"><span>${cs.length} contract${cs.length==1?'':'s'}</span><span>Pending <b>${pq}</b></span></div></div>`}).join('')||`<div class="emp"><b>No ledgers yet</b>Create buyer and seller ledgers first, then add contracts.</div>`}
+ else{let a=db.c.slice();
+  if(T=='p')a=a.filter(open).sort((x,y)=>x.v.localeCompare(y.v));
+  else{a.sort((x,y)=>(y.dt+y.tm).localeCompare(x.dt+x.tm));if(F!='All')a=a.filter(c=>st(c)==F);
+   if(q)a=a.filter(c=>(c.no+(c.on||'')+ln(c.b)+ln(c.s)+c.item).toLowerCase().includes(q))}
+  h=a.map(card).join('')||`<div class="emp"><b>${T=='p'?'Nothing pending':'No contracts found'}</b>${T=='p'?'All open contracts are delivered.':'Tap “New contract” to record one.'}</div>`}
+ $('#lst').innerHTML=h}
+/* Ledger form */
+function lf(id){EID=id||'';const l=L(id)||{};
+ sh(`<h2>${id?'Edit ledger':'New ledger'}</h2>
+ <div class="f"><span>Party name</span><input id="ln" value="${esc(l.name||'')}" oninput="nck()" autocomplete="off"></div><div id="nm" class="hint"></div>
+ <div class="f"><span>Ledger type</span><select id="lt">${['Buyer','Seller','Both'].map(t=>`<option ${l.type==t?'selected':''}>${t}</option>`).join('')}</select></div>
+ <div class="f"><span>GSTIN (optional)</span><div class="row"><input id="lg" value="${esc(l.gst||'')}" maxlength="15" autocapitalize="characters" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');gck(1)"><button class="btn2" type="button" onclick="gck()">Check GST</button></div></div><div id="gr" class="hint"></div><div id="gd"></div>
+ <div class="f"><span>Address</span><input id="la" value="${esc(l.addr||'')}" placeholder="Shop / building, street, area"></div><div class="two"><div class="f"><span>City</span><input id="lc" value="${esc(l.city||'')}"></div><div class="f"><span>Pincode</span><input id="lp2" inputmode="numeric" maxlength="6" placeholder="6 digits" oninput="pinLive(this)" value="${esc(l.pin||'')}"></div></div><div class="f"><span>Phone</span><input id="lp" type="tel" inputmode="numeric" maxlength="14" placeholder="10-digit mobile" oninput="phLive(this)" value="${esc(l.ph||'')}"></div>
+ <div id="er" class="er"></div><button class="btn" onclick="sl()">Save ledger</button>`);if(l.gst)gck(1)}
+function nck(){const v=$('#ln').value.trim(),d=v&&db.l.find(x=>nk(x.name)==nk(v)&&x.id!=EID),e=$('#nm');
+ e.className='hint '+(d?'bad':v?'ok':'');e.textContent=d?`A ledger named “${d.name}” already exists`:v?'Name is available':''}
+function gck(a){const g=$('#lg').value,e=$('#gr'),gd=$('#gd');gd.innerHTML='';if(!g){e.textContent='';e.className='hint';return}
+ if(a&&g.length<15){e.className='hint';e.textContent=g.length+'/15 characters';return}
+ const r=checkGST(g);e.className='hint '+(r.ok?'ok':'bad');e.textContent=(r.ok?'✓ ':'✕ ')+r.m;if(r.ok)gd.innerHTML=gbox(r.d);return r}
+function sl(){const n=$('#ln').value.trim().replace(/\s+/g,' '),g=$('#lg').value,t=$('#lt').value,er=m=>{$('#er').textContent=m};
+ if(!n)return er('Enter the party name');
+ const d=db.l.find(x=>nk(x.name)==nk(n)&&x.id!=EID);if(d)return er(`Ledger “${d.name}” already exists. Use a different name`);
+ if(g){const r=checkGST(g);if(!r.ok)return er('GSTIN: '+r.m);const gd=db.l.find(x=>x.gst==g&&x.id!=EID);if(gd)return er(`This GSTIN is already used by “${gd.name}”`)}
+ if(EID){if(t=='Buyer'&&db.c.some(c=>c.s==EID))return er('This party is a seller in a contract. Choose Seller or Both');
+  if(t=='Seller'&&db.c.some(c=>c.b==EID))return er('This party is a buyer in a contract. Choose Buyer or Both')}
+ const pn=$('#lp2').value.trim(),ph=phNorm($('#lp').value);if(!pn)return er('Enter the pincode');if(!pinOk(pn))return er('Enter a valid 6-digit Indian pincode, for example 382715');if(!ph)return er('Enter the mobile number');if(!phOk(ph))return er('Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9');
+ const o={name:n,type:t,gst:g,addr:$('#la').value.trim(),city:$('#lc').value.trim(),pin:pn,ph:ph};
+ if(EID)Object.assign(L(EID),o);else db.l.push({id:uid(),...o});
+ save();cs();render();toast('Ledger saved')}
+function vl(id){const l=L(id),gd=(l.gst&&checkGST(l.gst).d)||{},cs_=db.c.filter(c=>c.b==id||c.s==id).sort((a,b)=>b.dt.localeCompare(a.dt)),o=cs_.filter(open);
+ sh(`<h2>${esc(l.name)}</h2><div class="kv"><div><span>Type</span><b>${l.type}</b></div><div><span>GSTIN</span><b>${l.gst?esc(l.gst)+' ✓':'—'}</b></div><div><span>State</span><b>${gd.state||'—'}</b></div><div><span>PAN</span><b>${gd.pan||'—'}</b></div><div><span>Constitution</span><b>${gd.ent||'—'}</b></div><div><span>Phone</span><b>${esc(l.ph)||'—'}</b></div><div class="w"><span>Address</span><b>${esc([l.addr,l.city,l.pin].filter(Boolean).join(', '))||'—'}</b></div>
+ <div><span>Total contracts</span><b>${cs_.length}</b></div><div><span>Pending qty</span><b>${qsum(o,pe)}</b></div>
+ <div><span>Total business</span><b>${inr(cs_.filter(c=>!c.x).reduce((s,c)=>s+val(c),0))}</b></div><div><span>Pending value</span><b>${inr(o.reduce((s,c)=>s+amtOf(c,pe(c)),0))}</b></div></div>
+ <div class="sec">Ledger entries</div>${cs_.map(c=>`<div class="dl" onclick="vc('${c.id}')" style="cursor:pointer"><span><b>${esc(c.no)}</b><span class="tag">${c.b==id?'Buyer':'Seller'}</span><br><span class="mu">${esc(c.item)} · ${vq(c,c.q)} · ${fd(c.dt)}</span></span><span class="bd ${st(c)}">${st(c)}</span></div>`).join('')||'<div class="mu">No contracts with this party yet.</div>'}
+ <div class="acts"><button class="btn s" onclick="lf('${id}')">Edit</button><button class="btn d" onclick="arm(this,()=>dl('${id}'))">Delete</button></div>`)}
+function dl(id){if(db.c.some(c=>c.b==id||c.s==id)){toast('Cannot delete: ledger has contracts');return}db.l=db.l.filter(x=>x.id!=id);save();cs();render();toast('Ledger deleted')}
+/* Contract form */
+function cf(id){EID=id||'';_ne=0;const c=C(id)||{},B=db.l.filter(l=>l.type!='Seller'),S=db.l.filter(l=>l.type!='Buyer'),now=new Date(),v=new Date(Date.now()+15*864e5);
+ if(!B.length||!S.length)return sh(`<h2>Create ledgers first</h2><p class="mu">You need at least one Buyer ledger and one Seller ledger (or a “Both” ledger for each side) before recording a contract.</p><button class="btn" onclick="lf()">+ New ledger</button>`);
+ const o=(a,sel)=>'<option value="">Select party</option>'+a.map(l=>`<option value="${l.id}" ${sel==l.id?'selected':''}>${esc(l.name)}</option>`).join('');
+ sh(`<h2>${id?'Edit contract':'New contract'}</h2>
+ <div class="f"><span>Contract number</span><input id="cn" value="${esc(c.no||nextNo())}" readonly style="font-weight:800;letter-spacing:.04em"><div class="hint" style="margin:6px 0 0">Auto number: S + month + serial + year, e.g. SOCT026</div></div>
+ <div class="two"><div class="f"><span>Date</span><input id="cd" type="date" value="${c.dt||ymd(now)}"></div><div class="f"><span>Time</span><input id="ct" type="time" value="${c.tm||p2(now.getHours())+':'+p2(now.getMinutes())}"></div></div>
+ <div class="f"><span>Buyer</span><select id="cb">${o(B,c.b)}</select></div><div class="f"><span>Seller</span><select id="cs">${o(S,c.s)}</select></div>
+ <div class="f"><span>Item</span><select id="ci" onchange="ich()"><option value="">Select item</option>${db.i.map(i=>`<option value="${esc(i.name)}" ${nk(c.item||'')==nk(i.name)?'selected':''}>${esc(i.name)}</option>`).join('')}<option value="__new">+ Add new item…</option></select><input id="cin" placeholder="New item name (saved for next time)" style="display:none;margin-top:8px"></div>
+ <div class="f"><span>Quantity and rate basis</span><select id="cru" onchange="ruf()"><option value="k" ${(c.ru||'k')=='k'?'selected':''}>Quantity in MT · rate per 10 kg</option><option value="m" ${c.ru=='m'?'selected':''}>Quantity in MT · rate per MT</option><option value="g" ${c.ru=='g'?'selected':''}>Quantity in Kgs · rate per 10 kg</option><option value="q" ${c.ru=='q'?'selected':''}>Quantity in Kgs · rate per kg</option><option value="n" ${c.ru=='n'?'selected':''}>Quantity in Nos · rate per Nos</option></select></div>
+ <div class="two"><div class="f"><span id="lq">Quantity (MT)</span><input id="cq" type="number" step="any" min="0" inputmode="decimal" value="${c.q||''}" oninput="am()"></div><div class="f"><span id="lr">Rate (₹ per 10 kg)</span><input id="cr" type="number" step="any" min="0" inputmode="decimal" value="${c.r||''}" oninput="am()"></div></div>
+ <div class="amt"><span>Contract value</span><span id="ca">₹0</span></div>
+ <div class="f"><span>Valid till</span><input id="cv" type="date" value="${c.v||ymd(v)}"></div>
+ <div class="f"><span>Payment terms</span><input id="cpt" value="${esc(c.pt||'')}" placeholder="e.g. Within 7 days of delivery"></div>
+ <div class="f"><span>Delivery terms / place</span><input id="cdp" value="${esc(c.dp||'')}" placeholder="e.g. Ex-godown, buyer's place"></div>
+ <div class="f"><span>Quality / specification</span><input id="cql" value="${esc(c.ql||'')}"></div>
+ <div class="f"><span>Packing</span><input id="cpk" value="${esc(c.pk||'')}"></div>
+ <div class="f"><span>Rate is</span><select id="ctx"><option value="">Select including or excluding tax</option><option value="e" ${c.tx=='e'?'selected':''}>Excluding tax</option><option value="i" ${c.tx=='i'?'selected':''}>Including tax</option></select></div>
+ <div class="f"><span>Brokerage</span><div class="row"><select id="cbt" onchange="bam()" style="flex:1.3"><option value="">No brokerage</option><option value="mt" ${c.bkT=='mt'?'selected':''}>₹ per MT</option><option value="pm" ${c.bkT=='pm'?'selected':''}>₹ per MT</option><option value="q" ${c.bkT=='q'?'selected':''}>₹ per 10 kg</option><option value="pc" ${c.bkT=='pc'?'selected':''}>% of value</option></select><input id="cbr" type="number" step="any" min="0" inputmode="decimal" value="${c.bkR||''}" placeholder="Rate" oninput="bam()" style="flex:1"></div><div id="cba" class="hint" style="margin:6px 0 0"></div></div>
+ <div class="f"><span>Brokerage payable by</span><select id="cbp"><option value="x" ${(c.bkP||'x')=='x'?'selected':''}>Buyer and seller equally</option><option value="b" ${c.bkP=='b'?'selected':''}>Buyer</option><option value="s" ${c.bkP=='s'?'selected':''}>Seller</option></select></div>
+ <div class="f"><span>Remarks (optional)</span><input id="cm" value="${esc(c.note||'')}"></div>
+ <div id="er" class="er"></div><button class="btn" onclick="sc()">Save contract</button>`);ruf()}
+function ruf(){const u=$('#cru').value||'k',n=u=='n';const ul=n?'Nos':(u=='g'||u=='q')?'Kgs':'MT';$('#lq').textContent='Quantity ('+ul+')';$('#lr').textContent='Rate (₹ per '+({k:'10 kg',m:'MT',n:'Nos',g:'10 kg',q:'kg'}[u])+')';const o=$('#cbt');if(o&&o.options){const kg=ul=='Kgs';o.options[1].text='₹ per '+(kg?'kg':ul);o.options[2].hidden=!kg;o.options[3].hidden=n;if((n&&o.value=='q')||(!kg&&o.value=='pm'))o.value=''}am()}
+function am(){$('#ca').textContent=inr(amtOf({ru:$('#cru').value,r:+$('#cr').value||0},+$('#cq').value||0));bam()}
+function bam(){const e=$('#cba');if(!e)return;const t=$('#cbt').value,r=+$('#cbr').value||0,c={q:+$('#cq').value||0,r:+$('#cr').value||0,ru:$('#cru').value,bkT:t,bkR:r};e.textContent=t&&r>0?'Brokerage: '+inr(bkAmt(c)):''}
+const x_ru=()=>$('#cru').value||'k';
+function sc(){const g=i=>$('#'+i).value.trim(),er=m=>{$('#er').textContent=m},no=EID?g('cn'):nextNo(),q=+g('cq'),r=+g('cr'),o=EID&&C(EID);
+ if(!no)return er('Enter the contract number');
+ if(db.c.some(c=>c.no.toLowerCase()==no.toLowerCase()&&c.id!=EID))return er(`Contract number ${no} is already used`);
+ if(!g('cb')||!g('cs'))return er('Select both buyer and seller');
+ if(g('cb')==g('cs'))return er('Buyer and seller cannot be the same party');
+ let it=g('ci');if(it=='__new'){it=g('cin').replace(/\s+/g,' ');if(!it)return er('Enter the new item name');const di_=db.i.find(x=>nk(x.name)==nk(it));if(di_)it=di_.name;else db.i.push({id:uid(),name:it})}
+ if(!it)return er('Select the item');
+ if(!(q>0))return er('Quantity must be greater than 0');if(!(r>0))return er('Rate must be greater than 0');if(!g('ctx')&&!(o&&o.tx===undefined))return er('Select whether the rate is including or excluding tax');
+ if(!g('cd')||!g('ct')||!g('cv'))return er('Enter date, time and validity');
+ if(g('cv')<g('cd'))return er('Validity cannot be before the contract date');
+ if(o&&(o.ru||'k')!=x_ru()&&(dv(o)>0||db.o.some(y=>y.c==o.id)))return er('Quantity and rate basis cannot be changed after deliveries or delivery orders exist');
+ if(o&&q<db.o.filter(x=>x.c==o.id).reduce((t,x)=>t+x.q,0))return er(`Quantity cannot be below delivery orders issued (${vq(o,db.o.filter(x=>x.c==o.id).reduce((t,x)=>t+x.q,0))})`);
+ if(o&&q<dv(o))return er(`Quantity cannot be below delivered quantity (${vq(o,dv(o))})`);
+ if(g('cbt')&&!(+g('cbr')>0))return er('Enter the brokerage rate');if(g('cbt')=='pc'&&+g('cbr')>100)return er('Brokerage percent cannot exceed 100');
+ const x={no,dt:g('cd'),tm:g('ct'),b:g('cb'),s:g('cs'),item:it,q,r,v:g('cv'),note:g('cm'),pt:g('cpt'),dp:g('cdp'),ql:g('cql'),pk:g('cpk'),bkT:g('cbt'),bkR:+g('cbr')||0,bkP:g('cbp')||'x',tx:g('ctx'),ru:g('cru')||'k'};
+ if(o)Object.assign(o,x);else{db.c.push({id:uid(),d:[],x:0,cm:ymNow(),...x,no:allocNo()});db.n++}
+ save();cs();render();toast('Contract saved')}
+function vc(id){const c=C(id),s=st(c);
+ sh(`<div class="r1"><h2 style="margin:0">${esc(c.no)}</h2><span class="bd ${s}">${s}</span></div><div style="height:12px"></div>
+ <div class="kv"><div><span>Date &amp; time</span><b>${fd(c.dt)}, ${c.tm}</b></div><div><span>Valid till</span><b>${fd(c.v)}</b></div>
+ <div class="w"><span>Buyer</span><b class="lk" onclick="vl('${c.b}')">${esc(ln(c.b))}</b></div><div class="w"><span>Seller</span><b class="lk" onclick="vl('${c.s}')">${esc(ln(c.s))}</b></div>
+ <div><span>Item</span><b>${esc(c.item)}</b></div><div><span>Rate</span><b>${inr(c.r)} / ${rtS(c)}</b><span>${altR(c)?'= '+inr(altR(c)[1])+' '+altR(c)[0].replace('Rate ',''):''}${txT(c)?(altR(c)?' · ':'')+txT(c):''}</span></div>
+ <div><span>Quantity</span><b>${vq(c,c.q)}</b></div><div><span>Contract value</span><b>${inr(val(c))}</b></div>
+ <div><span>Delivered</span><b>${vq(c,dv(c))}</b></div><div><span>Pending</span><b>${vq(c,pe(c))} · ${inr(amtOf(c,pe(c)))}</b></div>${[['Payment terms',c.pt],['Delivery terms',c.dp],['Quality / specification',c.ql],['Packing',c.pk],['Brokerage',bkLine(c,inr)]].filter(r=>r[1]).map(r=>`<div class="w"><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join('')}${c.note?`<div class="w"><span>Remarks</span><b>${esc(c.note)}</b></div>`:''}</div>
+ <div class="bar"><i style="width:${Math.min(100,dv(c)/c.q*100)}%"></i></div>
+ ${c.x?'':`<div class="sec">Record delivery</div><div class="row"><input class="srch" id="dq" type="number" step="any" inputmode="decimal" placeholder="Qty in ${uq(c)}" style="flex:1"><button class="btn2" onclick="ad('${id}')">Add</button></div><div id="er" class="er" style="margin-top:6px"></div>`}
+ ${(c.d||[]).length?`<div class="sec">Delivery history</div>`+c.d.map((x,i)=>`<div class="dl"><span><b>${vq(c,x.q)}</b> <span class="mu">· ${fdt(x)}</span></span>${x.do?`<span class="tag">${esc(x.no||'Delivery order')}</span>`:`<button aria-label="Remove" onclick="rd('${id}',${i})">×</button>`}</div>`).join(''):''}
+ ${db.o.filter(o=>o.c==id).length?`<div class="sec">Delivery orders</div>`+db.o.filter(o=>o.c==id).map(o=>`<div class="dl" onclick="vdo('${o.id}')" style="cursor:pointer"><span><b>${esc(o.no)}</b><span class="tag">${esc(o.vn)}</span><br><span class="mu">${vq(c,o.q)} · ${fd(o.dt)}</span></span></div>`).join(''):''}
+ <div class="acts" style="grid-template-columns:1fr;margin-bottom:0"><button class="btn" onclick="pdf('${id}')">Export as PDF</button></div><div class="acts"><button class="btn s" onclick="pdf('${id}','b')">WhatsApp buyer</button><button class="btn s" onclick="pdf('${id}','s')">WhatsApp seller</button></div>${c.x?'':`<div class="acts" style="grid-template-columns:1fr"><button class="btn s" onclick="dof('','${id}')">Create delivery order</button></div>`}
+ <div class="acts"><button class="btn s" onclick="cf('${id}')">Edit</button><button class="btn s" onclick="tx('${id}')">${c.x?'Reopen':'Cancel contract'}</button></div>
+ <div class="acts" style="grid-template-columns:1fr"><button class="btn d" onclick="arm(this,()=>dc('${id}'))">Delete contract</button></div>`)}
+function ad(id){const c=C(id),q=+$('#dq').value;
+ if(!(q>0))return $('#er').textContent='Enter a quantity greater than 0';
+ if(q>pe(c)+1e-9)return $('#er').textContent=`Only ${vq(c,pe(c))} is pending on this contract`;
+ {const n=new Date();c.d.push({dt:ymd(n),tm:p2(n.getHours())+':'+p2(n.getMinutes()),q})};save();render();vc(id);toast('Delivery recorded')}
+function rd(id,i){C(id).d.splice(i,1);save();render();vc(id)}
+function tx(id){const c=C(id);c.x=c.x?0:1;save();render();vc(id);toast(c.x?'Contract cancelled':'Contract reopened')}
+function dc(id){if(db.o.some(o=>o.c==id)){toast('Cannot delete: contract has delivery orders');return}db.c=db.c.filter(c=>c.id!=id);save();cs();render();toast('Contract deleted')}
+function itf(id){EID=id||'';const i=db.i.find(x=>x.id==id)||{};
+ sh(`<h2>${id?'Edit item':'New item'}</h2><div class="f"><span>Item name</span><input id="in" value="${esc(i.name||'')}" placeholder="e.g. Wheat" autocomplete="off"></div><div id="er" class="er"></div><button class="btn" onclick="si()">Save item</button>${id?`<div class="acts" style="grid-template-columns:1fr"><button class="btn d" onclick="arm(this,()=>di('${id}'))">Delete item</button></div>`:''}`)}
+function si(){const n=$('#in').value.trim().replace(/\s+/g,' ');if(!n)return $('#er').textContent='Enter the item name';
+ const d=db.i.find(x=>nk(x.name)==nk(n)&&x.id!=EID);if(d)return $('#er').textContent=`Item “${d.name}” already exists`;
+ if(EID){const o=db.i.find(x=>x.id==EID);db.c.forEach(c=>{if(nk(c.item)==nk(o.name))c.item=n});o.name=n}else db.i.push({id:uid(),name:n});
+ save();cs();render();toast('Item saved')}
+function di(id){const o=db.i.find(x=>x.id==id);if(db.c.some(c=>nk(c.item)==nk(o.name)))return toast('Cannot delete: item is used in contracts');db.i=db.i.filter(x=>x.id!=id);save();cs();render();toast('Item deleted')}
+function ich(){$('#cin').style.display=$('#ci').value=='__new'?'block':'none'}
+/* PDF export + native share */
+async function deliverCsv(blob,fn,title){try{await savePdf(blob,fn,'',title);toast('CSV ready')}catch(e){if(!/cancel/i.test(String(e&&e.message||e)))toast('Could not create the CSV')}}
+async function savePdf_(blob,fn,title){await savePdf(blob,fn,'',title)}
+async function deliverPdf(blob,fn,title){try{await savePdf(blob,fn,'',title);toast('PDF ready')}catch(e){if(!/cancel/i.test(String(e&&e.message||e)))toast('Could not create the PDF')}}
+function rdata(){if(RC){const c=C(RC);return c?[c]:[]}return db.c.filter(c=>!c.x&&c.dt>=RF&&c.dt<=RT&&(!RI||nk(c.item)==nk(RI))).sort((a,b)=>(a.dt+a.tm).localeCompare(b.dt+b.tm))}
+async function ppdf(id){
+ if(!window.jspdf)return toast('PDF engine not loaded');const l=L(id);if(!l)return;
+ const rows=rdata().filter(c=>(c.b==id||c.s==id)&&bkSh(c,id)>0),d=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=15,K=pdfKit(d),{fl,ik,ld,tx,fo,rs}=K,
+ tot=rows.reduce((s,c)=>s+bkAmt(c)*bkSh(c,id),0),pen=rows.reduce((s,c)=>s+bkPend(c)*bkSh(c,id),0);
+ pdfHead(d,K,'PARTY BROKERAGE STATEMENT','Statement period','');
+ ik('#D9A84E');fo('bold',11);tx(RC&&rows.length==1?'Contract '+rows[0].no:fd(RF)+'  to  '+fd(RT),W-M,25,{align:'right'});
+ let y=44;pdfParty(d,K,M,y,'PARTY',l);
+ [['Contracts',String(rows.length)],['Total brokerage',rs(tot)],['Pending brokerage',rs(pen)]].forEach((b,i)=>{const yy=y+i*13;fl(i==2?'#FBF3E1':'#F3F6F8');ld('#DDE4EA');d.roundedRect(M+93,yy,87,11,2,2,'FD');ik('#64748B');fo('normal',8);tx(b[0],M+97,yy+7);ik('#0F1D2B');fo('bold',10.5);tx(b[1],M+176,yy+7.2,{align:'right'})});
+ y+=46;const n0=rows.length,avail=266-y-8-10-8;let ch=10,fit=0;
+ for(const h of [10,9,8,7,6,5.4,4.6,4,3.6]){ch=h;if(n0*h<=avail){fit=1;break}}
+ const cN=fit?n0:Math.max(1,Math.floor(avail/ch));
+ fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo('bold',8);tx('Date',M+2,y+5.4);tx('Contract',M+19,y+5.4);tx('Counterparty',M+38,y+5.4);tx('Item',M+90,y+5.4);tx('Quantity',M+128,y+5.4,{align:'right'});tx('Brokerage',M+153,y+5.4,{align:'right'});tx('Pending',M+178,y+5.4,{align:'right'});y+=8;
+ rows.slice(0,cN).forEach((c,i)=>{const sh=bkSh(c,id),other=c.b==id?c.s:c.b,two=ch>=9,fs=two?8:Math.max(5.6,Math.min(8,ch*1.4)),by=y+ch/2+fs*0.125,a=bkAmt(c)*sh;
+  fl(i%2?'#FFFFFF':'#F3F6F8');d.rect(M,y,180,ch,'F');ik('#0F1D2B');fo('normal',two?7.5:fs);tx(fd(c.dt),M+2,by);fo('bold',two?8:fs);tx(String(c.no),M+19,by);
+  if(two){fo('bold',7.2);tx(d.splitTextToSize(ln(other),48)[0],M+38,y+ch*0.42);fo('normal',6.4);ik('#64748B');tx((c.b==id?'Buyer':'Seller')+' - pays '+Math.round(sh*100)+'%',M+38,y+ch*0.8)}
+  else{fo('normal',fs);tx(d.splitTextToSize(ln(other),50)[0],M+38,by)}
+  ik('#0F1D2B');fo('normal',two?7.5:fs);tx(d.splitTextToSize(c.item,34)[0],M+90,by);tx(vq(c,c.q),M+128,by,{align:'right'});fo('bold',two?8:fs);tx(bkAmt(c)>0?rs(a):'Not set',M+153,by,{align:'right'});tx(bkAmt(c)>0?rs(bkPend(c)*sh):'-',M+178,by,{align:'right'});y+=ch});
+ fl('#FBF3E1');d.rect(M,y,180,10,'F');ik('#0F1D2B');fo('bold',9);tx('Total',M+38,y+6.5);tx(rs(tot),M+153,y+6.5,{align:'right'});tx(rs(pen),M+178,y+6.5,{align:'right'});y+=10;
+ if(cN<n0){fo('normal',7);ik('#64748B');tx((n0-cN)+' more contract'+(n0-cN==1?'':'s')+' not listed to keep this statement on one page. Totals include them. Narrow the dates to list everything.',M,y+4)}
+ else if(!n0){fo('normal',9);ik('#64748B');tx('No brokerage contracts for this party in the period.',M+2,y+8)}
+ pdfFoot(d,K,[],'statement');
+ await deliverPdf(d.output('blob'),'Brokerage-'+String(l.name).replace(/[^\w]+/g,'_').slice(0,30)+'_'+stamp()+'.pdf','Brokerage statement')}
+async function partyCsv(only){
+ const rows=rdata(),pbs=partyBk(rows).filter(p=>!only||p.id==only);
+ if(!pbs.length)return toast('No party brokerage to export');
+ const dmy=s=>s?new Date(s+'T00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).replace(/ /g,'-'):'',out=[],add=a=>out.push(a.map(x=>Array.isArray(x)?csvCell(x[0],x[1]):csvCell(x)).join(',')),N=(v)=>[+(+v).toFixed(2),1],
+ roleOf=p=>p.nb&&p.ns?'Buyer & Seller':p.nb?'Buyer':'Seller',now=new Date();
+ add([CO().n.toUpperCase()]);if(CO().g)add(['GSTIN',CO().g]);if(CO().ad)add(['Address',CO().ad]);add([only?'Party Brokerage Statement':'Party-wise Brokerage Report']);
+ add(['Period',(RC&&rows.length==1?'Contract '+rows[0].no:dmy(RF)+' to '+dmy(RT))]);
+ if(RI&&!RC)add(['Item filter',RI]);
+ add(['Generated',dmy(ymd(now))+' '+t12(p2(now.getHours())+':'+p2(now.getMinutes()))]);add(['Contact',[CO().ph,CO().em].filter(Boolean).join(' | ')]);add(['Amounts in','INR']);add([]);
+ add(['PARTY SUMMARY']);add(['Party','Role','GSTIN','Mobile','City','State','Contracts','Total Brokerage (INR)','Pending Brokerage (INR)']);
+ let gT=0,gP=0,gC=0;
+ pbs.forEach(p=>{const l=L(p.id)||{},g=l.gst?checkGST(l.gst):null;gT+=p.t;gP+=p.p;gC+=p.n;add([ln(p.id),roleOf(p),l.gst||'',l.ph||'',l.city||'',g&&g.ok?g.d.state.replace(/ \(\d+\)/,''):'',[p.n,1],N(p.t),N(p.p)])});
+ add(['TOTAL','','','','','',[gC,1],N(gT),N(gP)]);add([]);
+ add(['CONTRACT DETAIL']);add(['Party','Role','Contract No','Contract Date','Counterparty','Item','Quantity','Unit','Rate (INR)','Rate Basis','Tax','Brokerage Basis','Payable Share (%)','Brokerage (INR)','Pending Quantity','Pending Brokerage (INR)']);
+ pbs.forEach(p=>{let st=0,sp=0;rows.filter(c=>(c.b==p.id||c.s==p.id)&&bkSh(c,p.id)>0).sort((a,b)=>a.dt.localeCompare(b.dt)||String(a.no).localeCompare(String(b.no),'en',{numeric:true})).forEach(c=>{const sh=bkSh(c,p.id),a=bkAmt(c)*sh,pd=bkPend(c)*sh,other=c.b==p.id?c.s:c.b;st+=a;sp+=pd;
+   add([ln(p.id),c.b==p.id?'Buyer':'Seller',c.no,dmy(c.dt),ln(other),c.item,[+(+c.q).toFixed(3),1],uq(c),N(c.r),'per '+rtS(c),txT(c),bkTxt(c,v=>'INR '+(+v).toFixed(2))||'Not set',[Math.round(sh*100),1],bkAmt(c)>0?N(a):'',[+pe(c).toFixed(3),1],bkAmt(c)>0?N(pd):''])});
+  add(['Subtotal - '+ln(p.id),'','','','','','','','','','','','',N(st),'',N(sp)]);add([])});
+ add(['GRAND TOTAL','','','','','','','','','','','','',N(gT),'',N(gP)]);
+ await deliverCsv(new Blob(['﻿'+out.join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'}),(only?'Party-Brokerage_'+String(ln(only)).replace(/[^\w]+/g,'_').slice(0,30):'Party-wise-Brokerage')+'_'+stamp()+'.csv','Party brokerage CSV')}
+async function rpdf(){
+ if(!window.jspdf)return toast('PDF engine not loaded');
+ const rows=rdata(),pbs=partyBk(rows),one=!!RC&&rows.length==1,d=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=15,K=pdfKit(d),{fl,ik,ld,tx,fo,rs}=K,
+ tq=qsum(rows),tb=rows.reduce((s,c)=>s+bkAmt(c),0),tp=rows.reduce((s,c)=>s+bkPend(c),0),over=[0];
+ pdfHead(d,K,'BROKERAGE REPORT','Report period','');
+ ik('#D9A84E');fo('bold',11);tx(one?'Contract '+rows[0].no:fd(RF)+'  to  '+fd(RT),W-M,25,{align:'right'});
+ [['Contracts',String(rows.length)],['Total quantity',tq],['Total brokerage',rs(tb)],['Pending brokerage',rs(tp)]].forEach((b,i)=>{const x=M+i*45.5;fl(i==3?'#FBF3E1':'#F3F6F8');ld('#DDE4EA');d.roundedRect(x,45,43,19,2,2,'FD');ik('#64748B');fo('normal',7.5);tx(b[0],x+3.5,51);ik('#0F1D2B');fo('bold',10.5);tx(b[1],x+3.5,59)});
+ let y=(RI&&!one)?76:72;if(RI&&!one){ik('#64748B');fo('normal',8.5);tx('Item: '+RI,M,71)}
+ const ens=(h,hd)=>{if(y+h>266){d.addPage();y=20;over[0]=1;if(hd)hd()}};
+ const payer=c=>({b:'Buyer',s:'Seller',x:'Buyer and seller equally'}[c.bkP||'x']),roleOf=p=>p.nb&&p.ns?'Buyer & Seller':p.nb?'Buyer':'Seller';
+ const pHead=()=>{fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo('bold',8);tx('Party details',M+2,y+5.4);tx('Role',M+92,y+5.4);tx('Contracts',M+128,y+5.4,{align:'right'});tx('Total',M+154,y+5.4,{align:'right'});tx('Pending',M+178,y+5.4,{align:'right'});y+=8};
+ let pN=pbs.length,cN=rows.length;
+ const pRows=ph=>{pbs.slice(0,pN).forEach((p,i)=>{ens(ph,pHead);const l=L(p.id)||{},g=l.gst?checkGST(l.gst):null,two=ph>=8,fs=two?8:Math.max(5.6,Math.min(8,ph*1.4)),by=y+ph/2+fs*0.125,
+   det=[l.gst?'GSTIN '+l.gst:'GSTIN not provided',l.ph?'Ph '+l.ph:'',[l.addr,l.city,g&&g.ok?g.d.state.replace(/ \(\d+\)/,''):'',l.pin].filter(Boolean).join(', ')].filter(Boolean).join('  |  ');
+   fl(i%2?'#FFFFFF':'#F3F6F8');d.rect(M,y,180,ph,'F');ik('#0F1D2B');fo('bold',two?8:fs);tx(d.splitTextToSize(ln(p.id),86)[0],M+2,two?y+ph*0.42:by);
+   if(two){fo('normal',6.6);ik('#64748B');tx(d.splitTextToSize(det,84)[0],M+2,y+ph*0.8)}
+   ik('#0F1D2B');fo('normal',two?7.5:fs);tx(roleOf(p),M+92,by);tx(String(p.n),M+128,by,{align:'right'});tx(rs(p.t),M+154,by,{align:'right'});fo('bold',two?8:fs);tx(rs(p.p),M+178,by,{align:'right'});y+=ph})};
+ const cHead=()=>{fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo('bold',8);tx('Date',M+2,y+5.4);tx('Contract',M+19,y+5.4);tx('Buyer / Seller',M+36,y+5.4);tx('Item',M+84,y+5.4);tx('Quantity',M+124,y+5.4,{align:'right'});tx('Brokerage',M+151,y+5.4,{align:'right'});tx('Pending',M+178,y+5.4,{align:'right'});y+=8};
+ const cRows=ch=>{rows.slice(0,cN).forEach((c,i)=>{ens(ch,cHead);const two=ch>=9,fs=two?8:Math.max(5.6,Math.min(8,ch*1.4)),by=y+ch/2+fs*0.125,a=bkAmt(c);
+   fl(i%2?'#FFFFFF':'#F3F6F8');d.rect(M,y,180,ch,'F');ik('#0F1D2B');fo('normal',two?7.5:fs);tx(fd(c.dt),M+2,by);fo('bold',two?8:fs);tx(String(c.no),M+19,by);
+   if(two){fo('bold',7.2);tx(d.splitTextToSize(ln(c.b),44)[0],M+36,y+ch*0.42);fo('normal',6.6);ik('#64748B');tx('from '+d.splitTextToSize(ln(c.s),38)[0],M+36,y+ch*0.8)}
+   else{fo('normal',fs);tx(d.splitTextToSize(ln(c.b)+' / '+ln(c.s),46)[0],M+36,by)}
+   ik('#0F1D2B');fo('normal',two?7.5:fs);tx(d.splitTextToSize(c.item,24)[0],M+84,by);tx(vq(c,c.q),M+124,by,{align:'right'});
+   fo('bold',two?8:fs);tx(a>0?rs(a):'Not set',M+151,by,{align:'right'});if(two&&a>0){fo('normal',6.2);ik('#64748B');tx(bkTxt(c,rs),M+151,y+ch*0.8,{align:'right'})}
+   ik('#0F1D2B');fo('bold',two?8:fs);tx(a>0?rs(bkPend(c)):'-',M+178,by,{align:'right'});y+=ch})};
+ const tRow=()=>{ens(10);fl('#FBF3E1');d.rect(M,y,180,10,'F');ik('#0F1D2B');fo('bold',9);tx('Total',M+36,y+6.5);tx(tq,M+124,y+6.5,{align:'right'});tx(rs(tb),M+151,y+6.5,{align:'right'});tx(rs(tp),M+178,y+6.5,{align:'right'});y+=10};
+ if(one){const c=rows[0];
+  pdfParty(d,K,M,y,'BUYER',L(c.b)||{});pdfParty(d,K,M+93,y,'SELLER',L(c.s)||{});y+=42;
+  fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo('bold',9);tx('Brokerage details',M+4,y+5.6);y+=8;
+  [['Contract date',fd(c.dt)+', '+t12(c.tm)],['Item',c.item],['Quantity',vq(c,c.q)+kgT(c,c.q)],['Rate per '+rtS(c),rs(c.r)+(txT(c)?'  ('+txT(c)+')':'')],['Brokerage basis',bkTxt(c,rs)||'Not set'],['Total brokerage',rs(bkAmt(c))],['Pending quantity',vq(c,pe(c))],['Pending brokerage',rs(bkPend(c))],['Payable by',payer(c)]].forEach((r,i)=>{const hl=r[0]=='Pending brokerage';fl(hl?'#FBF3E1':i%2?'#F3F6F8':'#FFFFFF');d.rect(M,y,180,8.2,'F');ik('#64748B');fo('normal',9);tx(r[0],M+4,y+5.6);ik('#0F1D2B');fo('bold',hl?11:9.5);tx(String(r[1]),M+58,y+5.6);y+=8.2});
+  y+=6;if(pbs.length){pHead();pRows(10)}}
+ else{const nP0=pbs.length,nC0=rows.length,avail=266-y-(nP0?13:0)-(nC0?29:0);
+  let ph=10,ch=11,fit=0;for(const[a,b]of[[10,11],[9,9.5],[8.4,8.6],[7.2,7.2],[6.2,6.2],[5.4,5.4],[4.6,4.6],[4,4],[3.6,3.6]]){ph=a;ch=b;if(nP0*a+nC0*b<=avail){fit=1;break}}
+  if(!fit){pN=Math.min(nP0,Math.max(1,Math.floor(avail*0.3/ph)));cN=Math.max(1,Math.floor((avail-pN*ph)/ch))}
+  if(nP0){pHead();pRows(ph);y+=5}
+  if(nC0){cHead();cRows(ch);tRow();if(cN<nC0||pN<nP0){fo('normal',7);ik('#64748B');tx((cN<nC0?(nC0-cN)+' more contract'+(nC0-cN==1?'':'s'):'')+(cN<nC0&&pN<nP0?' and ':'')+(pN<nP0?(nP0-pN)+' more part'+(nP0-pN==1?'y':'ies'):'')+' not listed to keep this report on one page. All totals include them. Narrow the dates or pick an item to list everything.',M,y+4)}}else{fo('normal',9);ik('#64748B');tx('No contracts in this period.',M+2,y+8)}}
+ pdfFoot(d,K,[],'report');
+ await deliverPdf(d.output('blob'),(one?'Brokerage-'+String(rows[0].no):'Brokerage-Report-'+RF+'_to_'+RT)+'.pdf','Brokerage report');
+}
+function tnf(id){EID=id||'';const t=db.t.find(x=>x.id==id)||{};
+ sh(`<h2>${id?'Edit transporter':'New transporter'}</h2><div class="f"><span>Transporter name</span><input id="tn" value="${esc(t.name||'')}" autocomplete="off"></div><div id="er" class="er"></div><button class="btn" onclick="stn()">Save transporter</button>${id?`<div class="acts" style="grid-template-columns:1fr"><button class="btn d" onclick="arm(this,()=>dtn('${id}'))">Delete transporter</button></div>`:''}`)}
+function stn(){const n=$('#tn').value.trim().replace(/\s+/g,' ');if(!n)return $('#er').textContent='Enter the transporter name';
+ const d=db.t.find(x=>nk(x.name)==nk(n)&&x.id!=EID);if(d)return $('#er').textContent=`Transporter “${d.name}” already exists`;
+ if(EID){const o=db.t.find(x=>x.id==EID);db.o.forEach(x=>{if(nk(x.tn)==nk(o.name))x.tn=n});o.name=n}else db.t.push({id:uid(),name:n});
+ save();cs();render();toast('Transporter saved')}
+function dtn(id){db.vh.forEach(v=>{if(v.t==id)v.t=''});db.t=db.t.filter(x=>x.id!=id);save();cs();render();toast('Transporter deleted')}
+function vhf(id){EID=id||'';const v=db.vh.find(x=>x.id==id)||{};
+ sh(`<h2>${id?'Edit vehicle':'New vehicle'}</h2><div class="f"><span>Vehicle number</span><input id="vn" value="${esc(v.no||'')}" maxlength="11" autocapitalize="characters" placeholder="e.g. GJ01AB1234" oninput="vnLive(this)"></div><div class="f"><span>Transporter (optional)</span><select id="vt"><option value="">No transporter</option>${db.t.map(t=>`<option value="${t.id}" ${v.t==t.id?'selected':''}>${esc(t.name)}</option>`).join('')}</select></div><div id="er" class="er"></div><button class="btn" onclick="svh()">Save vehicle</button>${id?`<div class="acts" style="grid-template-columns:1fr"><button class="btn d" onclick="arm(this,()=>dvh('${id}'))">Delete vehicle</button></div>`:''}`)}
+function svh(){const n=$('#vn').value.trim(),er=m=>{$('#er').textContent=m};if(!vnOk(n))return er(vnMsg(n));
+ if(db.vh.some(x=>x.no==n&&x.id!=EID))return er(`Vehicle ${n} already exists`);
+ if(EID){const o=db.vh.find(x=>x.id==EID);db.o.forEach(x=>{if(x.vn==o.no)x.vn=n});o.no=n;o.t=$('#vt').value}else db.vh.push({id:uid(),no:n,t:$('#vt').value});
+ save();cs();render();toast('Vehicle saved')}
+function dvh(id){db.vh=db.vh.filter(x=>x.id!=id);save();cs();render();toast('Vehicle deleted')}
+const csvCell=(v,num)=>{v=v==null?'':String(v);if(!num&&/^[=+\-@]/.test(v))v="'"+v;return /[",\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+async function doCsv(id){const q=Q.trim().toLowerCase(),a=(id?db.o.filter(o=>o.id==id):db.o.filter(o=>doMatch(o,q))).sort((x,y)=>x.dt.localeCompare(y.dt)||x.no.localeCompare(y.no));
+ if(!a.length)return toast('No delivery orders to export');
+ const H=['DO Number','Order Date','Contract No','Contract Date','Buyer','Buyer GSTIN','Seller','Seller GSTIN','Item','Quantity','Unit','Quantity (kg)','Vehicle No','Transporter','LR No','Billing Cycle','Contract Quantity','Dispatched Till This Order','Balance To Dispatch','Remarks'],
+ rows=a.map(o=>{const c=C(o.c)||{},b=L(c.b)||{},s=L(c.s)||{},idx=db.o.findIndex(x=>x.id==o.id),cum=db.o.filter((x,i)=>x.c==o.c&&i<=idx).reduce((t,x)=>t+x.q,0),bal=Math.max(0,+((c.q||0)-cum).toFixed(3));
+  const dd=s_=>s_?new Date(s_+'T00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).replace(/ /g,'-'):'';
+  return[[o.no],[dd(o.dt)],[c.no],[dd(c.dt)],[b.name||c.b&&ln(c.b)],[b.gst],[s.name||c.s&&ln(c.s)],[s.gst],[c.item],[+(+o.q).toFixed(3),1],[uq(c)],[qkg(c,o.q),1],[o.vn],[o.tn],[o.lr],[o.bc],[c.q==null?'':+(+c.q).toFixed(3),1],[+cum.toFixed(3),1],[bal,1],[o.note]]});
+ const nw=new Date(),top=[[CO().n.toUpperCase()],...(CO().g?[['GSTIN',CO().g]]:[]),...(CO().ad?[['Address',CO().ad]]:[]),[id?'Delivery Order '+a[0].no:'Delivery Orders'],['Generated',fd(ymd(nw))+' '+t12(p2(nw.getHours())+':'+p2(nw.getMinutes()))],['Contact',[CO().ph,CO().em].filter(Boolean).join(' | ')],[]].map(r=>r.map(x=>csvCell(x)));
+ const csv=[...top,H.map(h=>csvCell(h)),...rows.map(r=>r.map(x=>csvCell(x[0],x[1])))].map(r=>r.join(',')).join('\r\n')+'\r\n';
+ await deliverCsv(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),(id?vfn(a[0]):'Delivery-Orders_'+stamp())+'.csv','Delivery order CSV')}
+const cntDb=x=>({contracts:(x.c||[]).length,ledgers:(x.l||[]).length,deliveryOrders:(x.o||[]).length,items:(x.i||[]).length});
+const okDb=x=>!!x&&Array.isArray(x.l)&&Array.isArray(x.c)&&x.l.every(l=>l&&l.id&&l.name)&&x.c.every(c=>c&&c.id&&c.no&&c.dt&&c.b&&c.s)&&(!x.o||Array.isArray(x.o)&&x.o.every(o=>o&&o.id&&o.c))&&(!x.i||Array.isArray(x.i));
+async function deliverBackup(blob,fn,title){try{await savePdf_(blob,fn,title);return true}catch(e){if(!/cancel|declined/i.test(String(e&&(e.message||e.code)||e)))toast('Could not save the backup');return false}}
+async function expBk(){const at=new Date().toISOString(),blob=new Blob([JSON.stringify({app:'Brokerlynx',format:1,at,counts:cntDb(db),db},null,1)],{type:'application/json'});
+ if(await deliverBackup(blob,'Brokerlynx-Backup_'+stamp()+'.json','Brokerlynx backup')){db.lb=at;save();toast('Backup ready. Keep it somewhere safe');render()}}
+let PEND=null;
+function rsf(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{inp.value='';let o;try{o=JSON.parse(String(r.result).replace(/^﻿/,''))}catch(e){return toast('This file is not a valid backup')}
+ const x=o&&o.db?o.db:o;if(!okDb(x))return toast('This file is not a Brokerlynx backup');PEND={raw:JSON.stringify(x),at:o.at||'',n:cntDb(x),src:f.name};rsv()};r.readAsText(f)}
+function rss(k){const s=snapList().find(x=>x.k==k);if(!s)return;let x;try{x=JSON.parse(s.raw)}catch(e){return toast('This snapshot is damaged')}if(!okDb(x))return toast('This snapshot is damaged');PEND={raw:s.raw,at:s.at,n:cntDb(x),src:s.label};rsv()}
+function rsv(){const n=PEND.n;sh(`<h2>Restore this backup?</h2><div class="kv"><div class="w"><span>Source</span><b>${esc(PEND.src)}</b></div><div class="w"><span>Saved on</span><b>${PEND.at?esc(fd(ymd(new Date(PEND.at)))+', '+t12(p2(new Date(PEND.at).getHours())+':'+p2(new Date(PEND.at).getMinutes()))):'Unknown'}</b></div><div><span>Contracts</span><b>${n.contracts}</b></div><div><span>Ledgers</span><b>${n.ledgers}</b></div><div><span>Delivery orders</span><b>${n.deliveryOrders}</b></div><div><span>Items</span><b>${n.items}</b></div></div><p class="mu">This replaces everything in the app with the data above. A snapshot of your current data is kept first, so you can undo it from the snapshot list.</p><div class="acts" style="grid-template-columns:1fr"><button class="btn d" onclick="arm(this,rsdo)">Replace current data</button></div>`)}
+function rsdo(){if(!PEND)return;snapNow('Before restore',localStorage.getItem(K)||JSON.stringify(db));try{localStorage.setItem(K,PEND.raw)}catch(e){return toast('Could not restore: phone storage is full')}PEND=null;cs();toast('Restored. Reloading');setTimeout(()=>{try{location.reload()}catch(e){}},500)}
+function syncDo(o){db.c.forEach(c=>{if(c.id!=o.c&&c.d)c.d=c.d.filter(e=>e.do!=o.id)});const c=C(o.c);if(!c)return;c.d=c.d||[];const n=new Date(),e=c.d.find(x=>x.do==o.id);if(e){e.q=o.q;e.dt=o.dt;e.no=o.no}else c.d.push({dt:o.dt,tm:p2(n.getHours())+':'+p2(n.getMinutes()),q:o.q,do:o.id,no:o.no})}
+const unsyncDo=id=>db.c.forEach(c=>{if(c.d)c.d=c.d.filter(e=>e.do!=id)});
+function migLink(){if(db.nv>=5)return;const bak=JSON.stringify(db);try{localStorage.setItem(K+'_pre_link_backup',bak)}catch(e){}
+ try{db.o.slice().sort((a,b)=>(a.dt||'').localeCompare(b.dt||'')).forEach(o=>{const c=C(o.c);if(!c)return;c.d=c.d||[];if(c.d.some(e=>e.do==o.id))return;const room=Math.max(0,+(c.q-dv(c)).toFixed(3)),q=Math.min(o.q,room);if(q>0)c.d.push({dt:o.dt,tm:'',q,do:o.id,no:o.no})});db.nv=5;save()}
+ catch(e){db=JSON.parse(bak);db.sq=db.sq||{};db.sqo=db.sqo||{};console.error('Delivery link migration rolled back',e)}}
+const DTCf=()=>DTC.split('Sunshine Industries').join(CO().n);
+const DTC=['This contract is arranged through Sunshine Industries as broker between the buyer and the seller named above.','Item, quantity and rate are as stated in the contract details. Delivery is to be completed on or before the validity date.','Goods must conform to the quality or specification agreed between the parties. Non-conforming goods may be rejected by the buyer.','Payment is to be made as per the payment terms stated above.','Any dispute shall be settled by mutual discussion between the parties, and otherwise as per applicable law and the jurisdiction agreed between them.','Please inform the broker of any discrepancy in this contract note immediately on receipt.'].join('\n');
+function tcf(){sh(`<h2>Terms on every PDF</h2><p class="mu">One clause per line. These print under the contract details on every PDF. Edit them to match your own business terms.</p><div class="f"><textarea id="tct" rows="10">${esc(db.tc!=null?db.tc:DTCf())}</textarea></div><button class="btn" onclick="stc()">Save terms</button><div class="acts" style="grid-template-columns:1fr"><button class="btn s" onclick="rtc()">Reset to standard terms</button></div>`)}
+function cof(){const o=CO();sh(`<h2>Company details</h2><p class="mu">Printed on every PDF and CSV you create.</p>
+ <div class="f"><span>Company name *</span><input id="con" value="${esc(o.n)}" maxlength="60"></div>
+ <div class="f"><span>GSTIN (optional)</span><input id="cog" value="${esc(o.g)}" maxlength="15" autocapitalize="characters" oninput="this.value=this.value.toUpperCase().replace(/[^0-9A-Z]/g,'')"></div>
+ <div class="f"><span>Phone number *</span><input id="cop" value="${esc(o.ph)}" inputmode="numeric" maxlength="10"></div>
+ <div class="f"><span>Email *</span><input id="coe" type="email" value="${esc(o.em)}" maxlength="80"></div>
+ <div class="f"><span>Address (optional)</span><input id="coa" value="${esc(o.ad)}" maxlength="120"></div>
+ <div id="er" class="er"></div><button class="btn" onclick="scof()">Save company details</button>`)}
+function scof(){const g=i=>$('#'+i).value.trim().replace(/\s+/g,' '),er=m=>{$('#er').textContent=m},o=CO(),n=g('con'),gs=g('cog').toUpperCase(),ph=phNorm(g('cop')),em=g('coe'),ad=g('coa');
+ if(!n)return er('Enter the company name');
+ if(gs){const r=checkGST(gs);if(!r.ok)return er(r.m)}
+ if(!phOk(ph))return er('Enter a valid 10-digit mobile number');
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em))return er('Enter a valid email address');
+ if(db.tc!=null&&o.n!=n)db.tc=db.tc.split(o.n).join(n);
+ db.co={n,g:gs,ph,em,ad};save();cs();toast('Company details saved');render()}
+function stc(){db.tc=$('#tct').value.trim();save();cs();toast('Terms saved')}
+function rtc(){delete db.tc;save();tcf();toast('Standard terms restored')}
+function mk(id){
+ if(!window.jspdf)return null;
+ const c=C(id);let r;
+ for(const k of [1,.93,.86,.79,.72,.65]){r=drawNote(c,k);if(r.y<=257)break}
+ return r}
+function pdfKit(d){const rg=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));return{rg,fl:h=>d.setFillColor(...rg(h)),ik:h=>d.setTextColor(...rg(h)),ld:h=>d.setDrawColor(...rg(h)),tx:(t,x,y,o)=>d.text(t,x,y,o),fo:(w,z)=>{d.setFont('helvetica',w);d.setFontSize(z)},rs:n=>'Rs. '+(+n).toLocaleString('en-IN',{maximumFractionDigits:2})}}
+function pdfHead(d,K,title,rl,rv){const{fl,ik,tx,fo}=K,W=210,M=15;
+ fl('#0B3B3C');d.rect(0,0,W,38,'F');fl('#D9A84E');d.rect(0,38,W,1.5,'F');
+ ik('#FFFFFF');fo('bold',21);{let z=21;const nm=CO().n.toUpperCase();fo('bold',z);while(z>11&&d.getTextWidth(nm)>118){z--;fo('bold',z)}tx(nm,M,17);z=8.5;const cl=coLine();fo('normal',z);while(z>6&&d.getTextWidth(cl)>118){z-=.5;fo('normal',z)}ik('#D9A84E');tx(cl,M,24)}ik('#B8D4D2');fo('bold',9);tx(title,M,32);
+ fo('normal',8.5);ik('#B8D4D2');tx(rl,W-M,15,{align:'right'});ik('#D9A84E');fo('bold',17);tx(String(rv),W-M,25,{align:'right'})}
+function pdfFoot(d,K,sigs,what){const{fl,ik,ld,tx,fo}=K,W=210,M=15;
+ ld('#9AA8B6');d.setLineWidth(.2);sigs.forEach((t,i)=>{const x=M+i*65;d.line(x,264,x+50,264);ik('#64748B');fo('normal',8);let t2=t;while(d.getTextWidth(t2)>58&&t2.length>6){t2=t2.slice(0,-2)}if(t2!=t)t2=t2.trim()+'..';tx(t2,x,269)});
+ fl('#0B3B3C');d.rect(0,274,W,23,'F');fl('#D9A84E');d.rect(0,274,W,1.2,'F');ik('#D9A84E');fo('bolditalic',12);{const fit=(t,z,st)=>{fo(st||'normal',z);while(z>5&&d.getTextWidth(t)>180){z-=.5;fo(st||'normal',z)}return t};tx(fit('Thank You For Connecting With '+CO().n,12,'bolditalic'),W/2,284,{align:'center'});ik('#FFFFFF');tx(fit(coLine(),8.5),W/2,290,{align:'center'});ik('#8FB3B1');tx(fit((CO().ad?CO().ad+'  |  ':'')+'Computer-generated '+what+'  |  '+fd(ymd(new Date())),7),W/2,294.5,{align:'center'})}}
+function pdfParty(d,K,x,y,t,l){const{fl,ik,ld,tx,fo}=K;
+ fl('#F3F6F8');ld('#DDE4EA');d.roundedRect(x,y,87,38,2,2,'FD');ik('#17696A');fo('bold',8);tx(t,x+5,y+6);ik('#0F1D2B');fo('bold',12);tx(d.splitTextToSize(l.name||'-',77)[0],x+5,y+13);fo('normal',8.5);ik('#475569');
+ const g=l.gst?checkGST(l.gst):null,rows=[l.gst?'GSTIN: '+l.gst:'GSTIN: not provided',...d.splitTextToSize([l.addr,l.city,g&&g.ok?g.d.state.replace(/ \(\d+\)/,''):'',l.pin].filter(Boolean).join(', ')||'Address not provided',77).slice(0,2),l.ph?'Phone: '+l.ph:''].filter(Boolean).slice(0,5);
+ rows.forEach((r,i)=>tx(r,x+5,y+19+i*4.4))}
+function drawNote(c,k){
+ const b=L(c.b)||{},s=L(c.s)||{},d=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=15,fk=Math.max(k,.8),K=pdfKit(d),{fl,ik,ld,tx,rs}=K,
+ fo0=K.fo,fo=(w,z)=>K.fo(w,z*fk);
+ pdfHead(d,K,'CONTRACT NOTE','Contract no.',c.no);
+ [['Contract date',fd(c.dt)+', '+c.tm],['Valid till',fd(c.v)],['Status',st(c)]].forEach((m,i)=>{const x=M+i*61;ik('#64748B');fo0('normal',8);tx(m[0],x,48);ik('#0F1D2B');fo0('bold',11);tx(m[1],x,54)});
+ pdfParty(d,K,M,59,'BUYER',b);pdfParty(d,K,M+93,59,'SELLER',s);
+ let y=102;fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo0('bold',9);tx('Contract details',M+4,y+5.6);y+=8;
+ const rows=[['Item',c.item],['Quantity',vq(c,c.q)+kgT(c,c.q)],['Rate per '+rtS(c),rs(c.r)+(txT(c)?'  ('+txT(c)+')':'')],...(altR(c)?[[altR(c)[0],rs(altR(c)[1])]]:[]),['Contract value',rs(val(c))],['Delivered so far',vq(c,dv(c))],['Pending delivery',vq(c,pe(c))+'  ('+rs(amtOf(c,pe(c)))+')'],['Payment terms',c.pt],['Delivery terms',c.dp],['Quality / specification',c.ql],['Packing',c.pk],['Brokerage',bkLine(c,rs)]].filter(r=>r[1]);
+ rows.forEach((r,i)=>{const hl=r[0]=='Contract value';fo('bold',hl?12:10);const t=d.splitTextToSize(String(r[1]),116),h=Math.max(8.4*k,(t.length*4.6+3.6)*k),by=t.length==1?y+h/2+1.2*fk:y+4.2*k;
+  fl(hl?'#FBF3E1':i%2?'#F3F6F8':'#FFFFFF');d.rect(M,y,180,h,'F');ik('#64748B');fo('normal',9);tx(r[0],M+4,by);ik('#0F1D2B');fo('bold',hl?12:10);tx(t,M+58,by);y+=h});
+ ld('#DDE4EA');d.line(M,y,W-M,y);ik('#64748B');fo('normal',8);tx(c.ru=='n'?'Quantity is counted in Nos and the rate is quoted per Nos.':c.ru=='q'?'Quantity is in kgs and the rate is quoted per kg. 1 MT = 1,000 kg.':c.ru=='g'?'Quantity is in kgs and the rate is quoted per 10 kg. 1 MT = 1,000 kg.':c.ru=='m'?'Rates are quoted per MT. 1 MT = 1,000 kg.':'Rates are quoted per 10 kg. 1 MT = 1,000 kg = 100 units of 10 kg.',M,y+4.6*k+1);y+=9*k;
+ if(c.note){fo('bold',9);ik('#17696A');tx('Remarks',M,y+3);fo('normal',8.5);ik('#0F1D2B');const t=d.splitTextToSize(c.note,180).slice(0,3);tx(t,M,y+3+4.4*fk);y+=3+4.4*fk+t.length*3.6*fk+2*k}
+ const dd=c.d||[];if(dd.length){fo('bold',9);ik('#17696A');tx('Delivery record',M,y+3);y+=6.5*k;fo('normal',8);ik('#0F1D2B');const sh_=dd.slice(-12),rn=Math.ceil(sh_.length/3);sh_.forEach((x,i)=>tx(fdt(x)+'  -  '+vq(c,x.q),M+(i%3)*60,y+2.5+Math.floor(i/3)*4.4*fk));y+=rn*4.4*fk+3*k;if(dd.length>12){fo('normal',7.5);ik('#64748B');tx('Showing latest 12 of '+dd.length+' deliveries',M,y);y+=3.5*k}}
+ const tc=(db.tc!=null?db.tc:DTCf()).split('\n').map(x=>x.trim()).filter(Boolean);
+ if(tc.length){fo('bold',9);ik('#17696A');tx('Terms & conditions',M,y+3);y+=6.5*k;fo('normal',7.8);ik('#334155');tc.forEach((t,i)=>{const l=d.splitTextToSize((i+1)+'. '+t,180);tx(l,M,y+2.2);y+=l.length*3.3*fk+1.2*k})}
+ pdfFoot(d,K,['Buyer signature','Seller signature','Broker signature'],'contract note');
+ return{d,c,y}}
+function mkDo(id){
+ if(!window.jspdf)return null;
+ const o=db.o.find(x=>x.id==id),c=C(o.c),b=L(c.b)||{},s=L(c.s)||{},d=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=15,K=pdfKit(d),{fl,ik,ld,tx,fo}=K,
+ idx=db.o.findIndex(x=>x.id==id),cum=db.o.filter((x,i)=>x.c==c.id&&i<=idx).reduce((t,x)=>t+x.q,0),bal=Math.max(0,+(c.q-cum).toFixed(3));
+ pdfHead(d,K,'DELIVERY ORDER','Delivery order no.',o.no);
+ [['Order date',fd(o.dt)],['Against contract',String(c.no)],['Contract date',fd(c.dt)]].forEach((m,i)=>{const x=M+i*61;ik('#64748B');fo('normal',8);tx(m[0],x,48);ik('#0F1D2B');fo('bold',11);tx(m[1],x,54)});
+ pdfParty(d,K,M,59,'BUYER',b);pdfParty(d,K,M+93,59,'SELLER',s);
+ let y=102;fl('#0B3B3C');d.rect(M,y,180,8,'F');ik('#FFFFFF');fo('bold',9);tx('Dispatch details',M+4,y+5.6);y+=8;
+ const rows=[['Item',c.item],['Quantity dispatched',vq(c,o.q)+kgT(c,o.q)],['Vehicle number',o.vn],['Transporter',o.tn],['LR number',o.lr||'-'],['Billing cycle',o.bc||'-'],['Contract quantity',vq(c,c.q)],['Dispatched incl. this order',vq(c,cum)],['Balance to dispatch',vq(c,bal)],['Remarks',o.note]].filter(r=>r[1]);
+ rows.forEach((r,i)=>{const hl=r[0]=='Quantity dispatched'||r[0]=='Vehicle number',t=d.splitTextToSize(String(r[1]),116),h=Math.max(9.2,t.length*4.6+4.6);fo('bold',hl?12:10);
+  fl(r[0]=='Quantity dispatched'?'#FBF3E1':i%2?'#F3F6F8':'#FFFFFF');d.rect(M,y,180,h,'F');ik('#64748B');fo('normal',9);tx(r[0],M+4,y+6.1);ik('#0F1D2B');fo('bold',hl?12:10);tx(t,M+58,y+6.1);y+=h});
+ ld('#DDE4EA');d.line(M,y,W-M,y);ik('#64748B');fo('normal',8);const nt=d.splitTextToSize('This delivery order is issued against contract note '+c.no+' dated '+fd(c.dt)+'. The quantity shown is the dispatch quantity for the vehicle named above.',180);tx(nt,M,y+6);
+ pdfFoot(d,K,['Issued by '+CO().n,'Transporter / driver','Received by'],'delivery order');
+ return{d,o,y}}
+async function dpdf(id){const r=mkDo(id);if(!r)return toast('PDF engine not loaded');await deliverPdf(r.d.output('blob'),vfn(r.o)+'.pdf','Delivery order '+r.o.no)}
+function dof(id,cid){EID=id||'';const o=db.o.find(x=>x.id==id)||{},now=new Date(),
+ cl=db.c.filter(c=>!c.x&&(remDo(c,id)>0||c.id==o.c)).sort((a,b)=>(b.dt+b.tm).localeCompare(a.dt+a.tm));
+ if(!cl.length)return sh(`<h2>No contract available</h2><p class="mu">A delivery order is made against an existing contract that still has quantity left to dispatch. Create a contract first.</p><button class="btn" onclick="cf()">+ New contract</button>`);
+ const sel=o.c||cid||'',tl=db.t.map(t=>t.name),vls=db.vh.map(v=>({no:v.no,t:(db.t.find(t=>t.id==v.t)||{}).name||''}));
+ if(o.tn&&!tl.some(n=>nk(n)==nk(o.tn)))tl.push(o.tn);if(o.vn&&!vls.some(v=>v.no==o.vn))vls.push({no:o.vn,t:''});
+ sh(`<h2>${id?'Edit delivery order':'New delivery order'}</h2>
+ <div class="f"><span>Delivery order number</span><input id="dnum" value="${esc(o.no||nextDo())}" readonly style="font-weight:800;letter-spacing:.04em"></div>
+ <div class="f"><span>Order date</span><input id="ddt" type="date" value="${o.dt||ymd(now)}"></div>
+ <div class="f"><span>Contract</span><select id="dcon" onchange="dcc()"><option value="">Select contract</option>${cl.map(c=>`<option value="${c.id}" ${sel==c.id?'selected':''}>${esc(c.no)} · ${esc(ln(c.b))} · ${esc(c.item)}</option>`).join('')}</select></div>
+ <div class="f"><span>Item (from contract)</span><input id="ditem" readonly></div><div id="dinfo" class="hint" style="margin:-4px 0 12px"></div>
+ <div class="f"><span>Transporter</span><select id="dtsel" onchange="dts()"><option value="">Select transporter</option>${tl.map(n=>`<option value="${esc(n)}" ${nk(o.tn||'')==nk(n)?'selected':''}>${esc(n)}</option>`).join('')}<option value="__new">+ Add new transporter…</option></select><input id="dtrn" placeholder="New transporter name (saved for next time)" style="display:none;margin-top:8px"></div>
+ <div class="f"><span>Vehicle number</span><select id="dvsel" onchange="dvs()"><option value="">Select vehicle</option>${vls.map(v=>`<option value="${esc(v.no)}" ${o.vn==v.no?'selected':''}>${esc(v.no)}${v.t?' · '+esc(v.t):''}</option>`).join('')}<option value="__new">+ Add new vehicle…</option></select><input id="dveh" maxlength="11" autocapitalize="characters" placeholder="e.g. GJ01AB1234" oninput="vnLive(this)" style="display:none;margin-top:8px"></div>
+ <div class="two"><div class="f"><span>LR number</span><input id="dlr" value="${esc(o.lr||'')}"></div><div class="f"><span>Billing cycle</span><input id="dbc" value="${esc(o.bc||'')}" placeholder="e.g. 15 days"></div></div>
+ <div class="f"><span id="dql">Quantity (MT)</span><input id="dqty" type="number" step="any" min="0" inputmode="decimal" value="${o.q||''}"></div>
+ <div class="f"><span>Remarks (optional)</span><input id="drem" value="${esc(o.note||'')}"></div>
+ <div id="er" class="er"></div><button class="btn" onclick="sdo()">Save delivery order</button>`);dcc(1)}
+function dts(){$('#dtrn').style.display=$('#dtsel').value=='__new'?'block':'none'}
+function dvs(){const v=$('#dvsel').value;$('#dveh').style.display=v=='__new'?'block':'none';const m=db.vh.find(x=>x.no==v);if(m&&m.t){const t=db.t.find(x=>x.id==m.t);if(t){$('#dtsel').value=t.name;dts()}}}
+function dcc(init){const c=C($('#dcon').value),i=$('#dinfo');if(!c){$('#ditem').value='';i.textContent='';return}
+ const rem=remDo(c,EID);$('#ditem').value=c.item;$('#dql').textContent='Quantity ('+uq(c)+')';i.className='hint ok';i.textContent=`${ln(c.b)} from ${ln(c.s)} · contract ${vq(c,c.q)} · left to dispatch ${vq(c,rem)}`;
+ if(!init||!$('#dqty').value)$('#dqty').value=rem||''}
+function sdo(){const g=i=>$('#'+i).value.trim(),er=m=>{$('#er').textContent=m},c=C(g('dcon')),q=+g('dqty'),dt=g('ddt'),ex=EID&&db.o.find(y=>y.id==EID),no=ex?ex.no:nextDo();
+ let tn=g('dtsel'),vn=g('dvsel');if(tn=='__new')tn=g('dtrn').replace(/\s+/g,' ');if(vn=='__new')vn=g('dveh');
+ if(!dt)return er('Enter the order date');
+ if(!c)return er('Select a contract');
+ if(dt<c.dt)return er('Order date cannot be before the contract date');
+ if(!tn)return er('Select or add the transporter name');
+ if(!vn)return er('Select or add the vehicle number');
+ if(!vnOk(vn))return er(vnMsg(vn));
+ const rem=remDo(c,EID);if(!(q>0))return er('Quantity must be greater than 0');if(q>rem+1e-9)return er(`Only ${vq(c,rem)} is left to dispatch on this contract`);
+ const x={no,dt,c:c.id,vn,tn,lr:g('dlr'),bc:g('dbc'),q,note:g('drem')};
+ let t=db.t.find(y=>nk(y.name)==nk(tn));if(!t){t={id:uid(),name:tn};db.t.push(t)}else x.tn=t.name;
+ if(!db.vh.some(y=>y.no==vn))db.vh.push({id:uid(),no:vn,t:t.id});
+ if(EID)Object.assign(ex,x);else db.o.push({id:uid(),cm:ymNow(),...x,no:allocDo()});
+ syncDo(EID?ex:db.o[db.o.length-1]);
+ save();cs();render();toast('Delivery order saved')}
+function vdo(id){const o=db.o.find(x=>x.id==id),c=C(o.c);
+ sh(`<div class="r1"><h2 style="margin:0">${esc(o.no)}</h2><span class="bd Pending">Delivery order</span></div><div style="height:12px"></div>
+ <div class="kv"><div><span>Order date</span><b>${fd(o.dt)}</b></div><div><span>Contract</span><b class="lk" onclick="vc('${c.id}')">${esc(c.no)}</b></div>
+ <div class="w"><span>Buyer</span><b>${esc(ln(c.b))}</b></div><div class="w"><span>Seller</span><b>${esc(ln(c.s))}</b></div>
+ <div><span>Item</span><b>${esc(c.item)}</b></div><div><span>Quantity</span><b>${vq(c,o.q)}</b></div>
+ <div><span>Vehicle number</span><b>${esc(o.vn)}</b></div><div><span>Transporter</span><b>${esc(o.tn)}</b></div>
+ <div><span>LR number</span><b>${esc(o.lr)||'—'}</b></div><div><span>Billing cycle</span><b>${esc(o.bc)||'—'}</b></div>${o.note?`<div class="w"><span>Remarks</span><b>${esc(o.note)}</b></div>`:''}</div>
+ <div class="acts" style="margin-bottom:0"><button class="btn" onclick="dpdf('${id}')">Export as PDF</button><button class="btn s" onclick="doCsv('${id}')">Export as CSV</button></div>
+ <div class="acts"><button class="btn s" onclick="dof('${id}')">Edit</button><button class="btn d" onclick="arm(this,()=>ddl('${id}'))">Delete</button></div>`)}
+function ddl(id){unsyncDo(id);db.o=db.o.filter(x=>x.id!=id);save();cs();render();toast('Delivery order deleted')}
+async function savePdf(blob,fn,msg,title){
+ const cap=window.Capacitor,P=cap&&cap.Plugins;
+ if(cap&&cap.isNativePlatform&&cap.isNativePlatform()&&P&&P.Filesystem&&P.Share){
+  const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(blob)});
+  const f=await P.Filesystem.writeFile({path:fn,data:b64,directory:'CACHE'});
+  await P.Share.share({title:title,text:msg||'',url:f.uri,dialogTitle:'Share file'});return}
+ const file=new File([blob],fn,{type:'application/pdf'});
+ if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],text:msg||''});return}catch(e){if(e&&e.name=='AbortError')return}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)
+}
+async function pdf(id,who){
+ const r=mk(id);if(!r)return toast('PDF engine not loaded');
+ const{d,c}=r,fn='Contract-'+String(c.no).replace(/[^\w-]/g,'')+'.pdf',blob=d.output('blob');
+ const msg=who?`Contract ${c.no}: ${c.item}, ${vq(c,c.q)} at ${inr(c.r)} per ${rtS(c)}${txT(c)?' ('+txT(c).toLowerCase()+')':''}. Please find the contract note attached.\n- ${CO().n}${CO().ph?', '+CO().ph:''}`:'';
+ try{await savePdf(blob,fn,msg,'Contract '+c.no);toast(who?'Choose WhatsApp to send':'PDF ready')}catch(e){if(!/cancel/i.test(String(e&&e.message||e)))toast('Could not create the PDF')}
+}
+/* one-time migration: rates per MT -> per 10 kg, build item master */
+if(!db.v){db.i=db.i||[];db.c.forEach(c=>{c.r=+(c.r/100).toFixed(4);if(c.item&&!db.i.some(i=>nk(i.name)==nk(c.item)))db.i.push({id:uid(),name:c.item})});db.v=2;save()}
+db.i=db.i||[];db.o=db.o||[];db.t=db.t||[];db.vh=db.vh||[];
+if(!db.mv){db.o.forEach(o=>{if(o.tn&&!db.t.some(t=>nk(t.name)==nk(o.tn)))db.t.push({id:uid(),name:o.tn});const t=db.t.find(t=>nk(t.name)==nk(o.tn||''));if(o.vn&&!db.vh.some(v=>v.no==o.vn))db.vh.push({id:uid(),no:o.vn,t:t?t.id:''})});db.mv=1;save()}
+migNo();
+migDo();
+migLink();
+try{const A=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App;if(A)A.addListener('backButton',()=>{if($('#sh').innerHTML)cs();else if(T!='c'){T='c';Q='';F='All';render()}else A.exitApp()})}catch(e){}
+render();
+</script></body></html>
