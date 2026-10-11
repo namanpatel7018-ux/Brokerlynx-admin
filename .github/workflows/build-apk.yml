@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: brokerbook-apk
     steps:
       - uses: actions/checkout@v4
 
@@ -33,7 +36,7 @@ jobs:
         run: npx cap sync android
 
       - name: Build debug APK
-        working-directory: android
+        working-directory: brokerbook-apk/android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
@@ -42,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Brokerlynx-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: brokerbook-apk/android/app/build/outputs/apk/debug/app-debug.apk
